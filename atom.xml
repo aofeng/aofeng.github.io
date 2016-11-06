@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://aofeng.github.io/"/>
-  <updated>2016-11-05T12:55:51.000Z</updated>
+  <updated>2016-11-06T10:08:41.000Z</updated>
   <id>http://aofeng.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://aofeng.github.io/2016/01/04/MySQL5-5-%E5%B0%86%E5%AD%97%E7%AC%A6%E9%9B%86%E4%BB%8Eutf8%E5%8D%87%E7%BA%A7%E4%B8%BAutf8mb4/"/>
     <id>http://aofeng.github.io/2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/</id>
     <published>2016-01-04T12:08:44.000Z</published>
-    <updated>2016-11-05T12:55:51.000Z</updated>
+    <updated>2016-11-06T10:08:41.000Z</updated>
     
     <content type="html"><![CDATA[<img src="/2016/01/04/MySQL5-5-&#x5C06;&#x5B57;&#x7B26;&#x96C6;&#x4ECE;utf8&#x5347;&#x7EA7;&#x4E3A;utf8mb4/&#x5E7F;&#x5DDE;_&#x6D77;&#x9A6C;_&#x706B;&#x70E7;&#x4E91;.jpg" alt="2016&#x6D77;&#x9A6C;&#x53F0;&#x98CE;&#x6765;&#x4E34;&#x65F6;&#x5E7F;&#x5DDE;&#x5929;&#x7A7A;&#x51FA;&#x73B0;&#x706B;&#x70E7;&#x4E91;" title="2016&#x6D77;&#x9A6C;&#x53F0;&#x98CE;&#x6765;&#x4E34;&#x65F6;&#x5E7F;&#x5DDE;&#x5929;&#x7A7A;&#x51FA;&#x73B0;&#x706B;&#x70E7;&#x4E91;">
 <!-- toc -->
@@ -32,63 +32,142 @@
 <!-- tocstop -->
 <p>MySQL&#x9ED8;&#x8BA4;&#x7684;utf8&#x53EA;&#x652F;&#x6301;&#x4E09;&#x5B57;&#x8282;&#x5B57;&#x7B26;&#xFF0C;&#x4E0D;&#x652F;&#x6301;Emoji&#x8868;&#x60C5;&#x7B26;&#xFF08;&#x56DB;&#x5B57;&#x8282;&#xFF09;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x56DB;&#x5B57;&#x8282;&#x7684;&#x5B57;&#x7B26;&#x5199;&#x5165;&#x4F1A;&#x62A5;&#x9519;&#x3002;&#x4ECE;MySQL 5.5&#x5F00;&#x59CB;&#xFF0C;&#x63D0;&#x4F9B;&#x4E86;utf8mb4&#xFF0C;&#x652F;&#x6301;&#x56DB;&#x5B57;&#x8282;&#x7684;&#x5B57;&#x7B26;&#x3002;<br>&#x8BB8;&#x591A;&#x4F7F;&#x7528;iphone&#x7684;&#x7528;&#x6237;&#x6765;&#x5728;&#x586B;&#x5199;&#x6635;&#x79F0;&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x52A0;&#x5165;Emoji&#x8868;&#x60C5;&#x7B26;&#xFF0C;&#x5982;&#x679C;MySQL&#x6CA1;&#x6709;&#x4F7F;&#x7528;utf8mb4&#x5B57;&#x7B26;&#x96C6;&#xFF0C;&#x8FD9;&#x6837;&#x7684;&#x6635;&#x79F0;&#x4FE1;&#x606F;&#x5C31;&#x65E0;&#x6CD5;&#x5199;&#x5165;&#x3002;</p>
 <h1 id="&#x4E00;-&#x5347;&#x7EA7;&#x524D;"><a href="#&#x4E00;&#x3001;&#x5347;&#x7EA7;&#x524D;" class="headerlink" title="&#x4E00;&#x3001;&#x5347;&#x7EA7;&#x524D;"></a>&#x4E00;&#x3001;&#x5347;&#x7EA7;&#x524D;</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW VARIABLES LIKE &apos;character_set%&apos;;</div></pre></td></tr></table></figure>
-<pre>
-+--------------------------+--------------------------------------------------------------------+
-| Variable_name            | Value                                                              |
-+--------------------------+--------------------------------------------------------------------+
-| character_set_client     | utf8                                                               |
-| character_set_connection | utf8                                                               |
-| character_set_database   | utf8                                                               |
-| character_set_filesystem | binary                                                             |
-| character_set_results    | utf8                                                               |
-| character_set_server     | utf8                                                               |
-| character_set_system     | utf8                                                               |
-| character_sets_dir       | /home/sdkserver/local/mysql-5.5.43-linux2.6-x86_64/share/charsets/ |
-+--------------------------+--------------------------------------------------------------------+
-8 rows in set (0.00 sec)
-</pre>
-
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>character_set_client</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_connection</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_database</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_filesystem</td>
+<td>binary</td>
+</tr>
+<tr>
+<td>character_set_results</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_server</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_system</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_sets_dir</td>
+<td>/home/sdkserver/local/mysql-5.5.43/share/charsets/</td>
+</tr>
+</tbody>
+</table>
+<p>8 rows in set (0.00 sec)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW VARIABLES LIKE &apos;collation%&apos;;</div></pre></td></tr></table></figure>
-<pre>
-+----------------------+-----------------+
-| Variable_name        | Value           |
-+----------------------+-----------------+
-| collation_connection | utf8_general_ci |
-| collation_database   | utf8_unicode_ci |
-| collation_server     | utf8_unicode_ci |
-+----------------------+-----------------+
-3 rows in set (0.00 sec)
-</pre>
-
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collation_connection</td>
+<td>utf8_general_ci</td>
+</tr>
+<tr>
+<td>collation_database</td>
+<td>utf8_unicode_ci</td>
+</tr>
+<tr>
+<td>collation_server</td>
+<td>utf8_unicode_ci</td>
+</tr>
+</tbody>
+</table>
+<p>3 rows in set (0.00 sec)</p>
 <h1 id="&#x4E8C;-&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"><a href="#&#x4E8C;&#x3001;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x4E8C;&#x3001;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x4E8C;&#x3001;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h1><p>&#x6253;&#x5F00;MySQL&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x5C06;&#x5B57;&#x7B26;&#x96C6;&#x7684;&#x914D;&#x7F6E;&#x4FEE;&#x6539;&#x6210;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="section">[client]</span>  </div><div class="line"><span class="attr">default-character-set</span> = utf8mb4</div><div class="line"><span class="section"></span></div><div class="line">[mysql]  </div><div class="line"><span class="attr">default-character-set</span> = utf8mb4</div><div class="line"><span class="section"></span></div><div class="line">[mysqld]  </div><div class="line"><span class="attr">character-set-client-handshake</span> = <span class="literal">FALSE</span></div><div class="line"><span class="attr">character-set-server</span> = utf8mb4</div><div class="line"><span class="attr">collation-server</span> = utf8mb4_general_ci</div><div class="line"><span class="attr">init_connect</span>=<span class="string">&apos;SET NAMES utf8mb4&apos;</span></div></pre></td></tr></table></figure></p>
 <h1 id="&#x4E09;-&#x5347;&#x7EA7;&#x540E;"><a href="#&#x4E09;&#x3001;&#x5347;&#x7EA7;&#x540E;" class="headerlink" title="&#x4E09;&#x3001;&#x5347;&#x7EA7;&#x540E;"></a>&#x4E09;&#x3001;&#x5347;&#x7EA7;&#x540E;</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW VARIABLES LIKE &apos;character_set%&apos;;</div></pre></td></tr></table></figure>
-<pre>
-+--------------------------+--------------------------------------------------------------------+
-| Variable_name            | Value                                                              |
-+--------------------------+--------------------------------------------------------------------+
-| character_set_client     | utf8mb4                                                            |
-| character_set_connection | utf8mb4                                                            |
-| character_set_database   | utf8mb4                                                            |
-| character_set_filesystem | binary                                                             |
-| character_set_results    | utf8mb4                                                            |
-| character_set_server     | utf8mb4                                                            |
-| character_set_system     | utf8                                                               |
-| character_sets_dir       | /home/nieyong/local/mysql-5.5.43/share/charsets/                   |
-+--------------------------+--------------------------------------------------------------------+
-8 rows in set (0.00 sec)
-</pre>
-
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>character_set_client</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_connection</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_database</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_filesystem</td>
+<td>binary</td>
+</tr>
+<tr>
+<td>character_set_results</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_server</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_system</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_sets_dir</td>
+<td>/home/nieyong/local/mysql-5.5.43/share/charsets/</td>
+</tr>
+</tbody>
+</table>
+<p>8 rows in set (0.00 sec)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW VARIABLES LIKE &apos;collation%&apos;;</div></pre></td></tr></table></figure>
-<pre>
-+----------------------+--------------------+
-| Variable_name        | Value              |
-+----------------------+--------------------+
-| collation_connection | utf8mb4_general_ci |
-| collation_database   | utf8mb4_general_ci |
-| collation_server     | utf8mb4_general_ci |
-+----------------------+--------------------+
-3 rows in set (0.00 sec)
-</pre>
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collation_connection</td>
+<td>utf8mb4_general_ci</td>
+</tr>
+<tr>
+<td>collation_database</td>
+<td>utf8mb4_general_ci</td>
+</tr>
+<tr>
+<td>collation_server</td>
+<td>utf8mb4_general_ci</td>
+</tr>
+</tbody>
+</table>
+<p>3 rows in set (0.00 sec)</p>
 ]]></content>
     
     <summary type="html">

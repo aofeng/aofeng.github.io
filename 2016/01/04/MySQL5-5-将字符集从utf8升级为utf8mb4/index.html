@@ -25,7 +25,7 @@ MySQL&amp;#x9ED8;&amp;#x8BA4;&amp;#x7684;utf8&amp;#x53EA;&amp;#x652F">
 
 MySQL&amp;#x9ED8;&amp;#x8BA4;&amp;#x7684;utf8&amp;#x53EA;&amp;#x652F">
 <meta property="og:image" content="http://aofeng.github.io/2016/01/04/MySQL5-5-&#x5C06;&#x5B57;&#x7B26;&#x96C6;&#x4ECE;utf8&#x5347;&#x7EA7;&#x4E3A;utf8mb4/&#x5E7F;&#x5DDE;_&#x6D77;&#x9A6C;_&#x706B;&#x70E7;&#x4E91;.jpg">
-<meta property="og:updated_time" content="2016-11-05T12:55:51.000Z">
+<meta property="og:updated_time" content="2016-11-06T10:08:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL5.5-将字符集从utf8升级为utf8mb4">
 <meta name="twitter:description" content="&amp;#x4E00;&amp;#x3001;&amp;#x5347;&amp;#x7EA7;&amp;#x524D;
@@ -204,118 +204,181 @@ var _hmt = _hmt || [];
 <!-- tocstop -->
 <p>MySQL&#x9ED8;&#x8BA4;&#x7684;utf8&#x53EA;&#x652F;&#x6301;&#x4E09;&#x5B57;&#x8282;&#x5B57;&#x7B26;&#xFF0C;&#x4E0D;&#x652F;&#x6301;Emoji&#x8868;&#x60C5;&#x7B26;&#xFF08;&#x56DB;&#x5B57;&#x8282;&#xFF09;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x56DB;&#x5B57;&#x8282;&#x7684;&#x5B57;&#x7B26;&#x5199;&#x5165;&#x4F1A;&#x62A5;&#x9519;&#x3002;&#x4ECE;MySQL 5.5&#x5F00;&#x59CB;&#xFF0C;&#x63D0;&#x4F9B;&#x4E86;utf8mb4&#xFF0C;&#x652F;&#x6301;&#x56DB;&#x5B57;&#x8282;&#x7684;&#x5B57;&#x7B26;&#x3002;<br>&#x8BB8;&#x591A;&#x4F7F;&#x7528;iphone&#x7684;&#x7528;&#x6237;&#x6765;&#x5728;&#x586B;&#x5199;&#x6635;&#x79F0;&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x52A0;&#x5165;Emoji&#x8868;&#x60C5;&#x7B26;&#xFF0C;&#x5982;&#x679C;MySQL&#x6CA1;&#x6709;&#x4F7F;&#x7528;utf8mb4&#x5B57;&#x7B26;&#x96C6;&#xFF0C;&#x8FD9;&#x6837;&#x7684;&#x6635;&#x79F0;&#x4FE1;&#x606F;&#x5C31;&#x65E0;&#x6CD5;&#x5199;&#x5165;&#x3002;</p>
 <h1 id="&#x4E00;-&#x5347;&#x7EA7;&#x524D;"><a href="#&#x4E00;&#x3001;&#x5347;&#x7EA7;&#x524D;" class="headerlink" title="&#x4E00;&#x3001;&#x5347;&#x7EA7;&#x524D;"></a>&#x4E00;&#x3001;&#x5347;&#x7EA7;&#x524D;</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW VARIABLES LIKE &apos;character_set%&apos;;</div></pre></td></tr></table></figure>
-<pre>
-+--------------------------+--------------------------------------------------------------------+
-| Variable_name            | Value                                                              |
-+--------------------------+--------------------------------------------------------------------+
-| character_set_client     | utf8                                                               |
-| character_set_connection | utf8                                                               |
-| character_set_database   | utf8                                                               |
-| character_set_filesystem | binary                                                             |
-| character_set_results    | utf8                                                               |
-| character_set_server     | utf8                                                               |
-| character_set_system     | utf8                                                               |
-| character_sets_dir       | /home/sdkserver/local/mysql-5.5.43-linux2.6-x86_64/share/charsets/ |
-+--------------------------+--------------------------------------------------------------------+
-8 rows in set (0.00 sec)
-</pre>
-
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>character_set_client</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_connection</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_database</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_filesystem</td>
+<td>binary</td>
+</tr>
+<tr>
+<td>character_set_results</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_server</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_set_system</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_sets_dir</td>
+<td>/home/sdkserver/local/mysql-5.5.43/share/charsets/</td>
+</tr>
+</tbody>
+</table>
+<p>8 rows in set (0.00 sec)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW VARIABLES LIKE &apos;collation%&apos;;</div></pre></td></tr></table></figure>
-<pre>
-+----------------------+-----------------+
-| Variable_name        | Value           |
-+----------------------+-----------------+
-| collation_connection | utf8_general_ci |
-| collation_database   | utf8_unicode_ci |
-| collation_server     | utf8_unicode_ci |
-+----------------------+-----------------+
-3 rows in set (0.00 sec)
-</pre>
-
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collation_connection</td>
+<td>utf8_general_ci</td>
+</tr>
+<tr>
+<td>collation_database</td>
+<td>utf8_unicode_ci</td>
+</tr>
+<tr>
+<td>collation_server</td>
+<td>utf8_unicode_ci</td>
+</tr>
+</tbody>
+</table>
+<p>3 rows in set (0.00 sec)</p>
 <h1 id="&#x4E8C;-&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"><a href="#&#x4E8C;&#x3001;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x4E8C;&#x3001;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x4E8C;&#x3001;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h1><p>&#x6253;&#x5F00;MySQL&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x5C06;&#x5B57;&#x7B26;&#x96C6;&#x7684;&#x914D;&#x7F6E;&#x4FEE;&#x6539;&#x6210;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="section">[client]</span>  </div><div class="line"><span class="attr">default-character-set</span> = utf8mb4</div><div class="line"><span class="section"></span></div><div class="line">[mysql]  </div><div class="line"><span class="attr">default-character-set</span> = utf8mb4</div><div class="line"><span class="section"></span></div><div class="line">[mysqld]  </div><div class="line"><span class="attr">character-set-client-handshake</span> = <span class="literal">FALSE</span></div><div class="line"><span class="attr">character-set-server</span> = utf8mb4</div><div class="line"><span class="attr">collation-server</span> = utf8mb4_general_ci</div><div class="line"><span class="attr">init_connect</span>=<span class="string">&apos;SET NAMES utf8mb4&apos;</span></div></pre></td></tr></table></figure></p>
 <h1 id="&#x4E09;-&#x5347;&#x7EA7;&#x540E;"><a href="#&#x4E09;&#x3001;&#x5347;&#x7EA7;&#x540E;" class="headerlink" title="&#x4E09;&#x3001;&#x5347;&#x7EA7;&#x540E;"></a>&#x4E09;&#x3001;&#x5347;&#x7EA7;&#x540E;</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW VARIABLES LIKE &apos;character_set%&apos;;</div></pre></td></tr></table></figure>
-<pre>
-+--------------------------+--------------------------------------------------------------------+
-| Variable_name            | Value                                                              |
-+--------------------------+--------------------------------------------------------------------+
-| character_set_client     | utf8mb4                                                            |
-| character_set_connection | utf8mb4                                                            |
-| character_set_database   | utf8mb4                                                            |
-| character_set_filesystem | binary                                                             |
-| character_set_results    | utf8mb4                                                            |
-| character_set_server     | utf8mb4                                                            |
-| character_set_system     | utf8                                                               |
-| character_sets_dir       | /home/nieyong/local/mysql-5.5.43/share/charsets/                   |
-+--------------------------+--------------------------------------------------------------------+
-8 rows in set (0.00 sec)
-</pre>
-
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>character_set_client</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_connection</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_database</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_filesystem</td>
+<td>binary</td>
+</tr>
+<tr>
+<td>character_set_results</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_server</td>
+<td>utf8mb4</td>
+</tr>
+<tr>
+<td>character_set_system</td>
+<td>utf8</td>
+</tr>
+<tr>
+<td>character_sets_dir</td>
+<td>/home/nieyong/local/mysql-5.5.43/share/charsets/</td>
+</tr>
+</tbody>
+</table>
+<p>8 rows in set (0.00 sec)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; SHOW VARIABLES LIKE &apos;collation%&apos;;</div></pre></td></tr></table></figure>
-<pre>
-+----------------------+--------------------+
-| Variable_name        | Value              |
-+----------------------+--------------------+
-| collation_connection | utf8mb4_general_ci |
-| collation_database   | utf8mb4_general_ci |
-| collation_server     | utf8mb4_general_ci |
-+----------------------+--------------------+
-3 rows in set (0.00 sec)
-</pre>
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collation_connection</td>
+<td>utf8mb4_general_ci</td>
+</tr>
+<tr>
+<td>collation_database</td>
+<td>utf8mb4_general_ci</td>
+</tr>
+<tr>
+<td>collation_server</td>
+<td>utf8mb4_general_ci</td>
+</tr>
+</tbody>
+</table>
+<p>3 rows in set (0.00 sec)</p>
 
         </div>
         <footer class="article-footer">
             
-    <div class="jiathis_style">
-    <span class="jiathis_txt">分享到：</span>
-    <a class="jiathis_button_qzone">QQ空间</a>
-    <a class="jiathis_button_tsina">新浪微博</a>
-    <a class="jiathis_button_tqq">腾讯微博</a>
-    <a class="jiathis_button_weixin">微信</a>
-    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-    <a class="jiathis_counter_style"></a>
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
 </div>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
 <style>
-    .jiathis_style div:first-child:not(.jiadiv_01) {
-        width: auto !important;
-        border: none !important;
-    }
-    .jiathis_style .jiadiv_01 {
-        margin: 10px 0;
+    .bdshare_popup_box {
         border-radius: 4px;
         border: #e1e1e1 solid 1px;
     }
-    .jiathis_style .jiadiv_01 div:first-child {
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
         display: none;
     }
-    .jiathis_style .jiadiv_02 {
-        padding: 7px 0 !important;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle {
-        width: 85px;
-        border: none;
+    .bdshare_popup_bottom {
         height: auto;
-        margin: 3px 10px;
-        padding: 6px 10px;
-        border-radius: 4px;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle:hover {
-        border: none;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
-        margin-left: 0;
-    }
-    .jiathis_style .jtico:hover {
-        opacity: 1;
-    }
-    .jiathis_style .ckepopBottom,
-    .jiathis_style .centerBottom {
-        width: auto !important;
         padding: 5px;
-        background: #f7f7f7;
     }
 </style>
-
 
 
 
@@ -326,7 +389,44 @@ var _hmt = _hmt || [];
     <section id="comments">
     
         
-    <div id="uyan_frame"></div>
+    <div class="ds-thread" data-thread-key="2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/" data-title="MySQL5.5-将字符集从utf8升级为utf8mb4" data-url="http://aofeng.github.io/2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
 
     
     </section>
@@ -471,7 +571,17 @@ var _hmt = _hmt || [];
 </footer>
         
     
-    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2118561"></script>
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'aofenggithub'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
 
 
 
