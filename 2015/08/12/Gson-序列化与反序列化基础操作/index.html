@@ -8,35 +8,17 @@
     
         <meta name="keywords" content="java,gson,json,serialize,序列化" />
     
-    <meta name="description" content="&amp;#x4E00;&amp;#x3001;&amp;#x666E;&amp;#x901A;&amp;#x5BF9;&amp;#x8C61;&amp;#xFF08;POJO&amp;#xFF09;
-&amp;#x4E8C;&amp;#x3001;&amp;#x6570;&amp;#x7EC4;
-1&amp;#x3001;&amp;#x5E8F;&amp;#x5217;&amp;#x5316;
-2&amp;#x3001;&amp;#x53CD;&amp;#x5E8F;&amp;#x5217;&amp;#x5316;
-
-
-&amp;#x4E09;&amp;#x3001;&amp;">
+    <meta name="description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Gson-序列化与反序列化基础操作">
 <meta property="og:url" content="http://aofeng.github.io/2015/08/12/Gson-序列化与反序列化基础操作/index.html">
 <meta property="og:site_name" content="聂勇的个人网站">
-<meta property="og:description" content="&amp;#x4E00;&amp;#x3001;&amp;#x666E;&amp;#x901A;&amp;#x5BF9;&amp;#x8C61;&amp;#xFF08;POJO&amp;#xFF09;
-&amp;#x4E8C;&amp;#x3001;&amp;#x6570;&amp;#x7EC4;
-1&amp;#x3001;&amp;#x5E8F;&amp;#x5217;&amp;#x5316;
-2&amp;#x3001;&amp;#x53CD;&amp;#x5E8F;&amp;#x5217;&amp;#x5316;
-
-
-&amp;#x4E09;&amp;#x3001;&amp;">
+<meta property="og:description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
 <meta property="og:image" content="http://aofeng.github.io/2015/08/12/Gson-&#x5E8F;&#x5217;&#x5316;&#x4E0E;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x57FA;&#x7840;&#x64CD;&#x4F5C;/cover.jpg">
-<meta property="og:updated_time" content="2016-11-06T11:40:05.000Z">
+<meta property="og:updated_time" content="2016-11-06T12:06:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gson-序列化与反序列化基础操作">
-<meta name="twitter:description" content="&amp;#x4E00;&amp;#x3001;&amp;#x666E;&amp;#x901A;&amp;#x5BF9;&amp;#x8C61;&amp;#xFF08;POJO&amp;#xFF09;
-&amp;#x4E8C;&amp;#x3001;&amp;#x6570;&amp;#x7EC4;
-1&amp;#x3001;&amp;#x5E8F;&amp;#x5217;&amp;#x5316;
-2&amp;#x3001;&amp;#x53CD;&amp;#x5E8F;&amp;#x5217;&amp;#x5316;
-
-
-&amp;#x4E09;&amp;#x3001;&amp;">
+<meta name="twitter:description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
 <meta name="twitter:image" content="http://aofeng.github.io/2015/08/12/Gson-&#x5E8F;&#x5217;&#x5316;&#x4E0E;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x57FA;&#x7840;&#x64CD;&#x4F5C;/cover.jpg">
     
 
@@ -109,7 +91,7 @@ var _hmt = _hmt || [];
                                     <a class="main-nav-list-link" href="/">主页</a>
                                 </li>
                             
-                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/">数据库</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/MySQL/">MySQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/">编程</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/Java/">Java</a></li></ul></li></ul>
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/">数据库</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/MySQL/">MySQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/版本控制/">版本控制</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/版本控制/Git/">Git</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/">编程</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/Java/">Java</a></li></ul></li></ul>
                                     
                                 <li class="main-nav-list-item" >
                                     <a class="main-nav-list-link" href="/about/index.html">关于</a>
@@ -197,7 +179,7 @@ var _hmt = _hmt || [];
         
         
         <div class="article-entry" itemprop="articleBody">
-            <img src="/2015/08/12/Gson-&#x5E8F;&#x5217;&#x5316;&#x4E0E;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x57FA;&#x7840;&#x64CD;&#x4F5C;/cover.jpg" alt="2015-&#x5916;&#x4F36;&#x4EC3;&#x5C9B;&#x5C71;&#x9876;&#x4FEF;&#x77B0;&#x5927;&#x6D77;&#x8D77;&#x96FE;" title="2015-&#x5916;&#x4F36;&#x4EC3;&#x5C9B;&#x5C71;&#x9876;&#x4FEF;&#x77B0;&#x5927;&#x6D77;&#x8D77;&#x96FE;">
+            <p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code><br><img src="/2015/08/12/Gson-&#x5E8F;&#x5217;&#x5316;&#x4E0E;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x57FA;&#x7840;&#x64CD;&#x4F5C;/cover.jpg" alt="2015-&#x5916;&#x4F36;&#x4EC3;&#x5C9B;&#x5C71;&#x9876;&#x4FEF;&#x77B0;&#x5927;&#x6D77;&#x8D77;&#x96FE;" title="2015-&#x5916;&#x4F36;&#x4EC3;&#x5C9B;&#x5C71;&#x9876;&#x4FEF;&#x77B0;&#x5927;&#x6D77;&#x8D77;&#x96FE;"></p>
 <!-- toc -->
 <ul>
 <li><a href="#&#x4E00;-&#x666E;&#x901A;&#x5BF9;&#x8C61;pojo">&#x4E00;&#x3001;&#x666E;&#x901A;&#x5BF9;&#x8C61;&#xFF08;POJO&#xFF09;</a></li>
@@ -384,6 +366,12 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     </a>
     
     
+        <a href="/2015/07/21/将项目从HG迁移至Git/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">将项目从HG迁移至Git</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
 </nav>
 
     
@@ -476,6 +464,26 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
                         </div>
                     </li>
                 
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/07/21/将项目从HG迁移至Git/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/07/21/&#x5C06;&#x9879;&#x76EE;&#x4ECE;HG&#x8FC1;&#x79FB;&#x81F3;Git/cover.png)" alt="将项目从HG迁移至Git" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/版本控制/">版本控制</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/版本控制/Git/">Git</a></p>
+                            <p class="item-title"><a href="/2015/07/21/将项目从HG迁移至Git/" class="title">将项目从HG迁移至Git</a></p>
+                            <p class="item-date"><time datetime="2015-07-21T12:38:18.000Z" itemprop="datePublished">2015-07-21</time></p>
+                        </div>
+                    </li>
+                
             </ul>
         </div>
     </div>
@@ -485,7 +493,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/">编程</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/">Java</a><span class="category-list-count">3</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/版本控制/">版本控制</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/版本控制/Git/">Git</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/">编程</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/">Java</a><span class="category-list-count">3</span></li></ul></li></ul>
         </div>
     </div>
 
@@ -495,7 +503,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -505,7 +513,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/gson/">gson</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/serialize/">serialize</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gson/">gson</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hg/">hg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/serialize/">serialize</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/版本控制/">版本控制</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -515,7 +523,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap widget-float">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/gson/" style="font-size: 20px;">gson</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/json/" style="font-size: 20px;">json</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/serialize/" style="font-size: 20px;">serialize</a> <a href="/tags/序列化/" style="font-size: 20px;">序列化</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a>
+            <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gson/" style="font-size: 20px;">gson</a> <a href="/tags/hg/" style="font-size: 10px;">hg</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/json/" style="font-size: 20px;">json</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/serialize/" style="font-size: 20px;">serialize</a> <a href="/tags/序列化/" style="font-size: 20px;">序列化</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a> <a href="/tags/版本控制/" style="font-size: 10px;">版本控制</a>
         </div>
     </div>
 
