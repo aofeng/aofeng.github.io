@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>MySQL5.5-主从复制配置 | 聂勇的个人网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="mysql,数据库,主从复制" />
+    
+    <meta name="description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL5.5-主从复制配置">
+<meta property="og:url" content="http://aofeng.github.io/2015/06/02/MySQL5-5-主从复制配置/index.html">
+<meta property="og:site_name" content="聂勇的个人网站">
+<meta property="og:description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta property="og:image" content="http://aofeng.github.io/2015/06/02/MySQL5-5-&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x914D;&#x7F6E;/01.png">
+<meta property="og:updated_time" content="2016-11-06T13:04:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL5.5-主从复制配置">
+<meta name="twitter:description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta name="twitter:image" content="http://aofeng.github.io/2015/06/02/MySQL5-5-&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x914D;&#x7F6E;/01.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="聂勇的个人网站" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-86920937-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?ce05028d1f67032125d91077c6c8a765";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">0与1构筑世界，程序员创造时代</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/">开源组件</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Nginx/">Nginx</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/操作系统/">操作系统</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/操作系统/Linux/">Linux</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/">数据库</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/MySQL/">MySQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/版本控制/">版本控制</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/版本控制/Git/">Git</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/">编程</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/Java/">Java</a></li></ul></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/数据库/">数据库</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/数据库/MySQL/">MySQL</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-MySQL5-5-主从复制配置" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        MySQL5.5-主从复制配置
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/2015/06/02/MySQL5-5-主从复制配置/" class="article-date">
+    <time datetime="2015-06-02T08:11:42.000Z" itemprop="datePublished">2015-06-02</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/主从复制/">主从复制</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code></p>
+<!-- toc -->
+<ul>
+<li><a href="#&#x4E00;-&#x73AF;&#x5883;">&#x4E00;&#x3001;&#x73AF;&#x5883;</a></li>
+<li><a href="#&#x4E8C;-&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x5668;id&#x548C;&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;">&#x4E8C;&#x3001;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x5668;ID&#x548C;&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;</a><ul>
+<li><a href="#1-&#x914D;&#x7F6E;master">1&#x3001;&#x914D;&#x7F6E;Master</a></li>
+<li><a href="#2-&#x914D;&#x7F6E;slave">2&#x3001;&#x914D;&#x7F6E;Slave</a></li>
+</ul>
+</li>
+<li><a href="#&#x4E09;-&#x6388;&#x6743;&#x548C;&#x590D;&#x5236;&#x914D;&#x7F6E;">&#x4E09;&#x3001;&#x6388;&#x6743;&#x548C;&#x590D;&#x5236;&#x914D;&#x7F6E;</a><ul>
+<li><a href="#1-&#x914D;&#x7F6E;master-1">1&#x3001;&#x914D;&#x7F6E;Master</a></li>
+<li><a href="#2-&#x914D;&#x7F6E;slave-1">2&#x3001;&#x914D;&#x7F6E;Slave</a></li>
+</ul>
+</li>
+<li><a href="#&#x56DB;-&#x9A8C;&#x8BC1;">&#x56DB;&#x3001;&#x9A8C;&#x8BC1;</a><ul>
+<li><a href="#1-&#x67E5;&#x770B;master&#x7684;&#x8FDB;&#x7A0B;">1&#x3001;&#x67E5;&#x770B;Master&#x7684;&#x8FDB;&#x7A0B;</a></li>
+<li><a href="#2-&#x67E5;&#x770B;slave&#x7684;&#x8FDB;&#x7A0B;">2&#x3001;&#x67E5;&#x770B;Slave&#x7684;&#x8FDB;&#x7A0B;</a></li>
+<li><a href="#3-&#x4E3B;&#x4ECE;&#x6570;&#x636E;&#x590D;&#x5236;&#x6821;&#x9A8C;">3&#x3001;&#x4E3B;&#x4ECE;&#x6570;&#x636E;&#x590D;&#x5236;&#x6821;&#x9A8C;</a></li>
+</ul>
+</li>
+<li><a href="#&#x4E94;-&#x53C2;&#x8003;&#x8D44;&#x6599;">&#x4E94;&#x3001;&#x53C2;&#x8003;&#x8D44;&#x6599;</a></li>
+</ul>
+<!-- tocstop -->
+<p>&#x5728;&#x5927;&#x578B;&#x7684;&#x4E92;&#x8054;&#x7F51;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x8BFB;&#x7684;&#x8BF7;&#x6C42;&#x975E;&#x5E38;&#x9891;&#x7E41;&#xFF0C;&#x5355;&#x4E2A;&#x6570;&#x636E;&#x5E93;&#x8282;&#x70B9;&#x4E0D;&#x80FD;&#x6EE1;&#x8DB3;&#x8BFB;&#x7684;&#x8981;&#x6C42;&#xFF0C;&#x5E38;&#x89C1;&#x7684;&#x505A;&#x6CD5;&#x662F;&#xFF1A;<code>&#x8BFB;&#x5199;&#x5206;&#x79BB;</code>&#xFF0C;&#x5C06;&#x8BFB;&#x64CD;&#x4F5C;&#x5206;&#x5E03;&#x81F3;&#x591A;&#x4E2A;&#x6570;&#x636E;&#x5E93;&#x4ECE;&#x8282;&#x70B9;&#x3002;<br>&#x9664;&#x4E86;&#x9AD8;&#x6027;&#x80FD;&#x5916;&#xFF0C;&#x9AD8;&#x53EF;&#x7528;&#x548C;&#x5BB9;&#x707E;&#x4E5F;&#x662F;&#x4E0D;&#x5BB9;&#x5FFD;&#x89C6;&#x7684;&#x8981;&#x6C42;&#xFF0C;&#x8BB8;&#x591A;&#x7CFB;&#x7EDF;&#x4F1A;&#x505A;&#x6570;&#x636E;&#x5907;&#x4EFD;&#xFF0C;&#x901A;&#x8FC7;&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x5C06;&#x6570;&#x636E;&#x5907;&#x4EFD;&#x81F3;&#x53E6;&#x4E00;&#x53F0;&#x7269;&#x7406;&#x670D;&#x52A1;&#x5668;&#x6216;&#x8005;&#x5F02;&#x5730;&#x673A;&#x623F;&#x3002;<br>MySQL&#x652F;&#x6301;&#x591A;&#x79CD;&#x7C7B;&#x578B;&#x7684;&#x6570;&#x636E;&#x590D;&#x5236;&#xFF1A;</p>
+<ul>
+<li><strong>&#x57FA;&#x4E8E;&#x8BED;&#x53E5;&#x7684;&#x590D;&#x5236;</strong>&#xFF1A;&#x6280;&#x672F;&#x6210;&#x719F;&#x3001;&#x590D;&#x5236;&#x6570;&#x636E;&#x9AD8;&#x6548;&#xFF0C;&#x4F46;&#x5728;&#x4E00;&#x4E9B;&#x7279;&#x6B8A;&#x573A;&#x666F;&#xFF08;&#x5982;&#xFF1A;&#x8BED;&#x53E5;&#x4E2D;&#x542B;&#x6709;now()&#x7B49;&#x8868;&#x793A;&#x5F53;&#x524D;&#x65F6;&#x95F4;&#x7684;&#x51FD;&#x6570;&#xFF09;&#x4E2D;&#x4F1A;&#x5BFC;&#x81F4;&#x6570;&#x636E;&#x4E0D;&#x4E00;&#x81F4;&#x3002;</li>
+<li><strong>&#x57FA;&#x4E8E;&#x884C;&#x7684;&#x590D;&#x5236;</strong>&#xFF1A;&#x57FA;&#x4E8E;&#x8868;&#x7684;&#x53D8;&#x5316;&#x8BB0;&#x5F55;&#x884C;&#x4FE1;&#x606F;&#xFF0C;&#x662F;&#x6700;&#x5B89;&#x5168;&#x7684;&#x590D;&#x5236;&#x65B9;&#x5F0F;&#xFF0C;&#x5982;&#x679C;&#x8BED;&#x53E5;&#x66F4;&#x65B0;&#x4E86;&#x5927;&#x91CF;&#x7684;&#x884C;&#xFF0C;&#x4F1A;&#x751F;&#x6210;&#x5F88;&#x5927;&#x7684;&#x65E5;&#x5FD7;&#xFF0C;&#x6548;&#x7387;&#x53D7;&#x5F71;&#x54CD;&#x3002;</li>
+<li><strong>&#x6DF7;&#x5408;&#x6A21;&#x5F0F;</strong>&#xFF1A;&#x517C;&#x987E;&#x57FA;&#x4E8E;&#x8BED;&#x53E5;&#x548C;&#x57FA;&#x4E8E;&#x884C;&#x7684;&#x4F18;&#x70B9;&#xFF0C;&#x6B63;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7528;&#x57FA;&#x4E8E;&#x8BED;&#x53E5;&#x6765;&#x590D;&#x5236;&#x6570;&#x636E;&#xFF0C;&#x5BF9;&#x4E8E;&#x4E0D;&#x5B89;&#x5168;&#x7684;&#x8BED;&#x53E5;&#x91C7;&#x7528;&#x57FA;&#x4E8E;&#x884C;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x590D;&#x5236;&#x6570;&#x636E;&#x3002;</li>
+</ul>
+<p>MySQL&#x7684;&#x590D;&#x5236;&#x8FC7;&#x7A0B;&#xFF1A;Master&#x8F93;&#x51FA;bin log&#xFF08;&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;&#xFF09;&#xFF0C;Slave&#x62C9;&#x53D6;bin log&#x5199;&#x5165;&#x672C;&#x5730;&#x7684;relay log&#xFF08;&#x4E2D;&#x7EE7;&#x65E5;&#x5FD7;&#xFF09;&#xFF0C;&#x7136;&#x540E;&#x89E3;&#x6790;&#x91CD;&#x653E;&#x64CD;&#x4F5C;&#x3002;&#x8BE6;&#x7EC6;&#x6B65;&#x805A;&#x5982;&#x4E0B;&#xFF1A;<br><img src="/2015/06/02/MySQL5-5-&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x914D;&#x7F6E;/01.png" alt="&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x793A;&#x610F;&#x56FE;" title="&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x793A;&#x610F;&#x56FE;"></p>
+<ol>
+<li>Master&#x63D0;&#x4EA4;&#x4E8B;&#x52A1;&#x4E4B;&#x524D;&#xFF0C;&#x5C06;&#x6539;&#x53D8;&#x7684;&#x5185;&#x5BB9;&#x4E32;&#x884C;&#x5730;&#x5199;&#x5165;bin log&#x3002;</li>
+<li>Slave&#x901A;&#x8FC7;<strong>I/O&#x7EBF;&#x7A0B;</strong>&#x8FDE;&#x63A5;&#x5230;Master&#xFF0C;&#x8BF7;&#x6C42;&#x4ECE;&#x6307;&#x5B9A;&#x65E5;&#x5FD7;&#x6587;&#x4EF6;&#x7684;&#x6307;&#x5B9A;&#x4F4D;&#x7F6E;&#x5F00;&#x59CB;&#x62C9;&#x53D6;&#x5185;&#x5BB9;&#x3002;</li>
+<li>Master&#x6536;&#x5230;&#x8BF7;&#x6C42;&#x540E;&#xFF0C;&#x901A;&#x8FC7;&#x81EA;&#x8EAB;&#x7684;<strong>I/O&#x7EBF;&#x7A0B;</strong>&#x8BFB;&#x53D6;&#x6307;&#x5B9A;&#x6587;&#x4EF6;&#x7684;&#x6307;&#x5B9A;&#x4F4D;&#x7F6E;&#x540E;&#x9762;&#x7684;&#x5185;&#x5BB9;&#x5E76;&#x8FD4;&#x56DE;&#x7ED9;Slave&#x3002;</li>
+<li>Slave&#x6536;&#x5230;&#x54CD;&#x5E94;&#x540E;&#xFF0C;&#x5C06;&#x65E5;&#x5FD7;&#x5185;&#x5BB9;&#x5199;&#x5165;&#x672C;&#x5730;&#x7684;relay log&#x3002;</li>
+<li>Slave&#x7684;<strong>SQL&#x7EBF;&#x7A0B;</strong>&#x89E3;&#x6790;relay log&#xFF0C;&#x8FD8;&#x539F;&#x64CD;&#x4F5C;&#xFF08;&#x5728;Slave&#x7AEF;&#x91CD;&#x653E;Master&#x7684;&#x64CD;&#x4F5C;&#xFF09;&#xFF0C;&#x4FDD;&#x6301;&#x6570;&#x636E;&#x4E00;&#x81F4;&#x3002;</li>
+</ol>
+<h1 id="&#x4E00;-&#x73AF;&#x5883;"><a href="#&#x4E00;&#x3001;&#x73AF;&#x5883;" class="headerlink" title="&#x4E00;&#x3001;&#x73AF;&#x5883;"></a>&#x4E00;&#x3001;&#x73AF;&#x5883;</h1><ul>
+<li>RedHat 5.x / CentOS 5.x</li>
+<li>GCC 4.1.2</li>
+<li>MySQL Master 5.5.43&#xFF0C;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x6570;&#x636E;&#xFF0C;IP&#x5730;&#x5740;&#x4E3A;192.168.56.102&#xFF0C;&#x76D1;&#x542C;&#x7AEF;&#x53E3;&#x4E3A;19826</li>
+<li>MySQL Slave 5.5.43&#xFF0C;&#x65B0;&#x5EFA;&#x7684;&#x5B9E;&#x4F8B;&#xFF08;&#x65E0;&#x6570;&#x636E;&#xFF09;&#xFF0C;IP&#x5730;&#x5740;&#x4E3A;192.168.56.102&#xFF0C;&#x76D1;&#x542C;&#x7AEF;&#x53E3;&#x4E3A;19836&#x3002;</li>
+</ul>
+<h1 id="&#x4E8C;-&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x5668;id&#x548C;&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;"><a href="#&#x4E8C;&#x3001;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x5668;ID&#x548C;&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;" class="headerlink" title="&#x4E8C;&#x3001;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x5668;ID&#x548C;&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;"></a>&#x4E8C;&#x3001;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x5668;ID&#x548C;&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;</h1><p>&#x8BF4;&#x660E;&#xFF1A;</p>
+<ul>
+<li>Master&#x548C;Slave&#x5FC5;&#x987B;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x670D;&#x52A1;&#x5668;ID&#xFF0C;&#x5982;&#x679C;&#x6709;&#x591A;&#x4E2A;Slave&#xFF0C;&#x6BCF;&#x4E2A;Slave&#x7684;&#x670D;&#x52A1;&#x5668;ID&#x4E5F;&#x5FC5;&#x987B;&#x552F;&#x4E00;&#x3002;</li>
+<li>Master&#x5FC5;&#x987B;&#x8F93;&#x51FA;bing log&#x3002;</li>
+</ul>
+<h2 id="1-&#x914D;&#x7F6E;master"><a href="#1&#x3001;&#x914D;&#x7F6E;Master" class="headerlink" title="1&#x3001;&#x914D;&#x7F6E;Master"></a>1&#x3001;&#x914D;&#x7F6E;Master</h2><p>&#x6253;&#x5F00;Master&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;my.cnf&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /home/nieyong/<span class="built_in">local</span>/mysql-5543/data/data19826/my.cnf</div></pre></td></tr></table></figure></p>
+<p>&#x4FEE;&#x6539;&#x5185;&#x5BB9;&#xFF1A;<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="section">[mysqld]</span></div><div class="line"><span class="attr">server-id</span> = <span class="number">26</span>   #[&#x5FC5;&#x987B;]&#x670D;&#x52A1;&#x5668;ID&#xFF0C;&#x5728;&#x96C6;&#x7FA4;&#x4E2D;&#x5FC5;&#x987B;&#x552F;&#x4E00;</div><div class="line"><span class="attr">log-bin</span> = /home/nieyong/local/mysql-<span class="number">5543</span>/data/data19826/data/mysql-bin   #[&#x5FC5;&#x987B;]&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;&#x8F93;&#x51FA;</div><div class="line"><span class="attr">binlog_format</span> = mixed   #[&#x53EF;&#x9009;]&#x914D;&#x7F6E;&#x4E3A;&#x6DF7;&#x5408;&#x6A21;&#x5F0F;</div></pre></td></tr></table></figure></p>
+<h2 id="2-&#x914D;&#x7F6E;slave"><a href="#2&#x3001;&#x914D;&#x7F6E;Slave" class="headerlink" title="2&#x3001;&#x914D;&#x7F6E;Slave"></a>2&#x3001;&#x914D;&#x7F6E;Slave</h2><p>&#x6253;&#x5F00;Slave&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;my.cnf&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /home/nieyong/<span class="built_in">local</span>/mysql-5543/data/data19836/my.cnf</div></pre></td></tr></table></figure></p>
+<p>&#x4FEE;&#x6539;&#x5185;&#x5BB9;&#xFF1A;<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="section">[mysqld]</span></div><div class="line"><span class="attr">server-id</span> = <span class="number">36</span>   #[&#x5FC5;&#x987B;]&#x670D;&#x52A1;&#x5668;ID&#xFF0C;&#x5728;&#x96C6;&#x7FA4;&#x4E2D;&#x5FC5;&#x987B;&#x552F;&#x4E00;</div><div class="line"><span class="attr">log-bin</span> = /home/nieyong/local/mysql-<span class="number">5543</span>/data/data19836/data/mysql-bin   #[&#x5FC5;&#x987B;]&#x4E8C;&#x8FDB;&#x5236;&#x65E5;&#x5FD7;&#x8F93;&#x51FA;</div><div class="line"><span class="attr">binlog_format</span> = mixed   #[&#x53EF;&#x9009;]&#x914D;&#x7F6E;&#x4E3A;&#x6DF7;&#x5408;&#x6A21;&#x5F0F;</div></pre></td></tr></table></figure></p>
+<p><code>&#x6CE8;&#xFF1A;&#x914D;&#x7F6E;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x91CD;&#x542F;master&#x548C;slave&#x3002;</code></p>
+<h1 id="&#x4E09;-&#x6388;&#x6743;&#x548C;&#x590D;&#x5236;&#x914D;&#x7F6E;"><a href="#&#x4E09;&#x3001;&#x6388;&#x6743;&#x548C;&#x590D;&#x5236;&#x914D;&#x7F6E;" class="headerlink" title="&#x4E09;&#x3001;&#x6388;&#x6743;&#x548C;&#x590D;&#x5236;&#x914D;&#x7F6E;"></a>&#x4E09;&#x3001;&#x6388;&#x6743;&#x548C;&#x590D;&#x5236;&#x914D;&#x7F6E;</h1><h2 id="1-&#x914D;&#x7F6E;master"><a href="#1&#x3001;&#x914D;&#x7F6E;Master-1" class="headerlink" title="1&#x3001;&#x914D;&#x7F6E;Master"></a>1&#x3001;&#x914D;&#x7F6E;Master</h2><p>1&#xFF09;&#x767B;&#x9646;Master&#x3002;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -S /home/nieyong/<span class="built_in">local</span>/mysql-5543/data/data19826/tmp/mysql.sock -u root -pmaster123456</div></pre></td></tr></table></figure></p>
+<p>2&#xFF09;&#x5728;Master&#x5EFA;&#x7ACB;&#x7528;&#x4E8E;&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x7684;&#x8D26;&#x53F7;&#x5E76;&#x6388;&#x6743;&#x3002;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CREATE USER &apos;repl_user&apos;@&apos;%&apos; IDENTIFIED BY &apos;repl_123456&apos;;</div><div class="line">GRANT REPLICATION SLAVE ON *.* TO &apos;repl_user&apos;@&apos;%&apos;;</div></pre></td></tr></table></figure></p>
+<p>&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#xFF1A;<br><img src="/2015/06/02/MySQL5-5-&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x914D;&#x7F6E;/02.png" alt="&#x521B;&#x5EFA;&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x8D26;&#x53F7;&#x5E76;&#x6388;&#x6743;" title="&#x521B;&#x5EFA;&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x8D26;&#x53F7;&#x5E76;&#x6388;&#x6743;"></p>
+<p>3&#xFF09;&#x5BFC;&#x51FA;Master&#x7684;&#x6570;&#x636E;&#x5E93;&#x3002;<br>&#x5728;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x547D;&#x4EE4;&#x884C;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqldump -S /home/nieyong/<span class="built_in">local</span>/mysql-5543/data/data19826/tmp/mysql.sock -u root -pmaster123456 --master-data=2 --all-databases &gt; /home/nieyong/db19826.sql</div></pre></td></tr></table></figure></p>
+<p>&#x8BF4;&#x660E;&#xFF1A;</p>
+<ul>
+<li>&#x2013;master-data=2 &#x8868;&#x793A;&#x8F93;&#x51FA;change master to &#x8BED;&#x53E5;&#x5E76;&#x5728;&#x524D;&#x9762;&#x52A0;&#x4E0A;&#x6CE8;&#x91CA;&#x7B26;(#)&#xFF0C;&#x5728;Slave&#x4E0A;&#x6267;&#x884C;change master to &#x65F6;&#x4F1A;&#x7528;&#x5230;&#x3002;</li>
+</ul>
+<p>4&#xFF09;&#x67E5;&#x770B;Master&#x72B6;&#x6001;&#x3002;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show master status;</div></pre></td></tr></table></figure></p>
+<p>&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#xFF1A;<br><img src="/2015/06/02/MySQL5-5-&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x914D;&#x7F6E;/03.png" alt="&#x67E5;&#x770B;Master&#x72B6;&#x6001;" title="&#x67E5;&#x770B;Master&#x72B6;&#x6001;"></p>
+<h2 id="2-&#x914D;&#x7F6E;slave"><a href="#2&#x3001;&#x914D;&#x7F6E;Slave-1" class="headerlink" title="2&#x3001;&#x914D;&#x7F6E;Slave"></a>2&#x3001;&#x914D;&#x7F6E;Slave</h2><p>1&#xFF09;&#x767B;&#x9646;Slave&#x3002;<br>&#x5728;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x547D;&#x4EE4;&#x884C;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -S /home/nieyong/<span class="built_in">local</span>/mysql-5543/data/data19836/tmp/mysql.sock -u root -pslave123456</div></pre></td></tr></table></figure></p>
+<p>2&#xFF09;&#x5BFC;&#x5165;&#x6570;&#x636E;&#x5E93;&#x3002;<br>&#x5728;mysql&#x547D;&#x4EE4;&#x884C;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> /home/nieyong/db19826.sql</div></pre></td></tr></table></figure></p>
+<p>3&#xFF09;&#x67E5;&#x770B;Slave&#x72B6;&#x6001;&#x3002;<br>&#x5728;mysql&#x547D;&#x4EE4;&#x884C;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show slave status;</div></pre></td></tr></table></figure></p>
+<img src="/2015/06/02/MySQL5-5-&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x914D;&#x7F6E;/04.png" alt="&#x67E5;&#x770B;Slave&#x72B6;&#x6001;" title="&#x67E5;&#x770B;Slave&#x72B6;&#x6001;">
+<p>4&#xFF09;&#x914D;&#x7F6E;&#x590D;&#x5236;&#x3002;<br>&#x5728;mysql&#x547D;&#x4EE4;&#x884C;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">change master to </div><div class="line">    master_host=<span class="string">&apos;192.168.56.102&apos;</span>,</div><div class="line">    master_port=19826,</div><div class="line">    master_user=<span class="string">&apos;repl_user&apos;</span>,</div><div class="line">    master_password=<span class="string">&apos;repl_123456&apos;</span>,</div><div class="line">    master_log_file=<span class="string">&apos;mysql-bin.000008&apos;</span>,</div><div class="line">    master_log_pos=107;</div></pre></td></tr></table></figure></p>
+<p>&#x8BF4;&#x660E;&#xFF1A;db19826.sql&#x4E2D;&#x6709;&#x4E00;&#x884C;&#x5185;&#x5BB9;&#x8BB0;&#x5F55;&#x5BFC;&#x51FA;&#x6570;&#x636E;&#x65F6;bin log&#x65E5;&#x5FD7;&#x6587;&#x4EF6;&#x53CA;&#x5176;&#x4F4D;&#x7F6E;&#x3002;</p>
+<p>5&#xFF09;&#x542F;&#x52A8;Slave&#x7EBF;&#x7A0B;&#x3002;<br>&#x5728;mysql&#x547D;&#x4EE4;&#x884C;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start slave;</div></pre></td></tr></table></figure></p>
+<p>6&#xFF09;&#x67E5;&#x770B;Slave&#x72B6;&#x6001;&#x3002;<br>&#x5728;mysql&#x547D;&#x4EE4;&#x884C;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show slave status\G</div></pre></td></tr></table></figure></p>
+<p>mysql&#x8F93;&#x51FA;&#x5982;&#x4E0B;&#x4FE1;&#x606F;&#xFF1A;</p>
+<pre>
+*************************** 1. row ***************************
+               Slave_IO_State: Waiting for master to send event
+                  Master_Host: 192.168.56.102
+                  Master_User: repl_user
+                  Master_Port: 19826
+                Connect_Retry: 60
+              Master_Log_File: mysql-bin.000008
+          Read_Master_Log_Pos: 107
+               Relay_Log_File: relay-bin.000002
+                Relay_Log_Pos: 253
+        Relay_Master_Log_File: mysql-bin.000008
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+              Replicate_Do_DB:
+          Replicate_Ignore_DB:
+           Replicate_Do_Table:
+       Replicate_Ignore_Table:
+      Replicate_Wild_Do_Table:
+  Replicate_Wild_Ignore_Table:
+                   Last_Errno: 0
+                   Last_Error:
+                 Skip_Counter: 0
+          Exec_Master_Log_Pos: 107
+              Relay_Log_Space: 403
+              Until_Condition: None
+               Until_Log_File:
+                Until_Log_Pos: 0
+           Master_SSL_Allowed: No
+           Master_SSL_CA_File:
+           Master_SSL_CA_Path:
+              Master_SSL_Cert:
+            Master_SSL_Cipher:
+               Master_SSL_Key:
+        Seconds_Behind_Master: 0
+Master_SSL_Verify_Server_Cert: No
+                Last_IO_Errno: 0
+                Last_IO_Error:
+               Last_SQL_Errno: 0
+               Last_SQL_Error:
+  Replicate_Ignore_Server_Ids:
+             Master_Server_Id: 26
+1 row in set (0.00 sec)
+</pre>
+
+<p><code>&#x6CE8;&#xFF1A;Slave_IO_Running&#x548C;Slave_SQL_Running&#x5FC5;&#x987B;&#x90FD;&#x662F;Yes&#xFF0C;&#x5426;&#x5219;&#x5C31;&#x8BF4;&#x660E;&#x5B58;&#x5728;&#x9519;&#x8BEF;&#xFF0C;&#x4E3B;&#x4ECE;&#x540C;&#x6B65;&#x6CA1;&#x6709;&#x914D;&#x7F6E;&#x6210;&#x529F;&#x3002;</code></p>
+<h1 id="&#x56DB;-&#x9A8C;&#x8BC1;"><a href="#&#x56DB;&#x3001;&#x9A8C;&#x8BC1;" class="headerlink" title="&#x56DB;&#x3001;&#x9A8C;&#x8BC1;"></a>&#x56DB;&#x3001;&#x9A8C;&#x8BC1;</h1><h2 id="1-&#x67E5;&#x770B;master&#x7684;&#x8FDB;&#x7A0B;"><a href="#1&#x3001;&#x67E5;&#x770B;Master&#x7684;&#x8FDB;&#x7A0B;" class="headerlink" title="1&#x3001;&#x67E5;&#x770B;Master&#x7684;&#x8FDB;&#x7A0B;"></a>1&#x3001;&#x67E5;&#x770B;Master&#x7684;&#x8FDB;&#x7A0B;</h2><p>&#x5728;Master&#x7684;mysql&#x547D;&#x4EE4;&#x884C;&#x8F93;&#x5165;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show full processlist\G</div></pre></td></tr></table></figure></p>
+<img src="/2015/06/02/MySQL5-5-&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x914D;&#x7F6E;/04.png" alt="&#x67E5;&#x770B;Master&#x7684;&#x8FDB;&#x7A0B;" title="&#x67E5;&#x770B;Master&#x7684;&#x8FDB;&#x7A0B;">
+<h2 id="2-&#x67E5;&#x770B;slave&#x7684;&#x8FDB;&#x7A0B;"><a href="#2&#x3001;&#x67E5;&#x770B;Slave&#x7684;&#x8FDB;&#x7A0B;" class="headerlink" title="2&#x3001;&#x67E5;&#x770B;Slave&#x7684;&#x8FDB;&#x7A0B;"></a>2&#x3001;&#x67E5;&#x770B;Slave&#x7684;&#x8FDB;&#x7A0B;</h2><p>&#x5728;Slave&#x7684;mysql&#x547D;&#x4EE4;&#x884C;&#x8F93;&#x5165;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show full processlist\G</div></pre></td></tr></table></figure></p>
+<img src="/2015/06/02/MySQL5-5-&#x4E3B;&#x4ECE;&#x590D;&#x5236;&#x914D;&#x7F6E;/05.png" alt="&#x67E5;&#x770B;Slave&#x7684;&#x8FDB;&#x7A0B;" title="&#x67E5;&#x770B;Slave&#x7684;&#x8FDB;&#x7A0B;">
+<h2 id="3-&#x4E3B;&#x4ECE;&#x6570;&#x636E;&#x590D;&#x5236;&#x6821;&#x9A8C;"><a href="#3&#x3001;&#x4E3B;&#x4ECE;&#x6570;&#x636E;&#x590D;&#x5236;&#x6821;&#x9A8C;" class="headerlink" title="3&#x3001;&#x4E3B;&#x4ECE;&#x6570;&#x636E;&#x590D;&#x5236;&#x6821;&#x9A8C;"></a>3&#x3001;&#x4E3B;&#x4ECE;&#x6570;&#x636E;&#x590D;&#x5236;&#x6821;&#x9A8C;</h2><p>1&#x3001;&#x5728;Master&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;&#x8868;&#xFF0C;SQL&#x8BED;&#x53E5;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> account_cp</div><div class="line">(</div><div class="line">   cp_id <span class="built_in">int</span> PRIMARY <span class="keyword">KEY</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">   cp_name <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">   cp_status tinyint <span class="keyword">DEFAULT</span> <span class="number">0</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">   ctime <span class="built_in">bigint</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">   creator <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line">   mtime <span class="built_in">bigint</span>,</div><div class="line">   modifier <span class="built_in">varchar</span>(<span class="number">20</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>&#x7136;&#x540E;&#x518D;&#x63D2;&#x5165;&#x4E00;&#x6761;&#x8BB0;&#x5F55;&#xFF1A;<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> account_cp(cp_id, cp_name, cp_status, ctime, creator) <span class="keyword">values</span>(<span class="number">1</span>, <span class="string">&apos;&#x50B2;&#x98CE;&#x7684;&#x535A;&#x5BA2;&apos;</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&apos;nieyong&apos;</span>);</div></pre></td></tr></table></figure></p>
+<p>2&#x3001;&#x8FDB;&#x5165;Slave&#x67E5;&#x770B;&#xFF0C;&#x540C;&#x6837;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x65B0;&#x589E;&#x4E86;&#x4E00;&#x4E2A;&#x8868;account_cp&#xFF0C;&#x5E76;&#x4E14;&#x5B58;&#x5728;&#x4E00;&#x6761;&#x4E00;&#x6837;&#x7684;&#x8BB0;&#x5F55;&#x3002;</p>
+<h1 id="&#x4E94;-&#x53C2;&#x8003;&#x8D44;&#x6599;"><a href="#&#x4E94;&#x3001;&#x53C2;&#x8003;&#x8D44;&#x6599;" class="headerlink" title="&#x4E94;&#x3001;&#x53C2;&#x8003;&#x8D44;&#x6599;"></a>&#x4E94;&#x3001;&#x53C2;&#x8003;&#x8D44;&#x6599;</h1><ul>
+<li><a href="http://aofengblog.blog.163.com/blog/static/6317021201541265528153/" target="_blank" rel="external">MySQL5.5&#x7F16;&#x8BD1;&#x5B89;&#x88C5;&#x548C;&#x591A;&#x5B9E;&#x4F8B;&#x914D;&#x7F6E;</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/5.5/en/replication-howto.html" target="_blank" rel="external">How to Set Up Replication</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2015/06/02/MySQL5-5-主从复制配置/" data-title="MySQL5.5-主从复制配置" data-url="http://aofeng.github.io/2015/06/02/MySQL5-5-主从复制配置/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/aofeng" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2015/06/05/CentOS6-Minimal-文本模式下配置网络/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            CentOS6 Minimal 文本模式下配置网络
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2016/01/04/MySQL5-5-&#x5C06;&#x5B57;&#x7B26;&#x96C6;&#x4ECE;utf8&#x5347;&#x7EA7;&#x4E3A;utf8mb4/cover.jpg)" alt="MySQL5.5-将字符集从utf8升级为utf8mb4" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据库/MySQL/">MySQL</a></p>
+                            <p class="item-title"><a href="/2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/" class="title">MySQL5.5-将字符集从utf8升级为utf8mb4</a></p>
+                            <p class="item-date"><time datetime="2016-01-04T12:08:44.000Z" itemprop="datePublished">2016-01-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/17/Gson-自定义反序列化/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/17/Gson-&#x81EA;&#x5B9A;&#x4E49;&#x53CD;&#x5E8F;&#x5217;&#x5316;/cover.jpg)" alt="Gson-自定义反序列化" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/17/Gson-自定义反序列化/" class="title">Gson-自定义反序列化</a></p>
+                            <p class="item-date"><time datetime="2015-08-17T12:21:12.000Z" itemprop="datePublished">2015-08-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/14/Gson-自定义序列化/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/14/Gson-&#x81EA;&#x5B9A;&#x4E49;&#x5E8F;&#x5217;&#x5316;/cover.jpg)" alt="Gson-自定义序列化" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/14/Gson-自定义序列化/" class="title">Gson-自定义序列化</a></p>
+                            <p class="item-date"><time datetime="2015-08-14T12:13:56.000Z" itemprop="datePublished">2015-08-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/12/Gson-序列化与反序列化基础操作/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/12/Gson-&#x5E8F;&#x5217;&#x5316;&#x4E0E;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x57FA;&#x7840;&#x64CD;&#x4F5C;/cover.jpg)" alt="Gson-序列化与反序列化基础操作" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/12/Gson-序列化与反序列化基础操作/" class="title">Gson-序列化与反序列化基础操作</a></p>
+                            <p class="item-date"><time datetime="2015-08-12T11:57:18.000Z" itemprop="datePublished">2015-08-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/07/21/将项目从HG迁移至Git/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/07/21/&#x5C06;&#x9879;&#x76EE;&#x4ECE;HG&#x8FC1;&#x79FB;&#x81F3;Git/cover.png)" alt="将项目从HG迁移至Git" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/版本控制/">版本控制</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/版本控制/Git/">Git</a></p>
+                            <p class="item-title"><a href="/2015/07/21/将项目从HG迁移至Git/" class="title">将项目从HG迁移至Git</a></p>
+                            <p class="item-date"><time datetime="2015-07-21T12:38:18.000Z" itemprop="datePublished">2015-07-21</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/">开源组件</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Nginx/">Nginx</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/Linux/">Linux</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/版本控制/">版本控制</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/版本控制/Git/">Git</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/">编程</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/">Java</a><span class="category-list-count">3</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos/">centos</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gnome/">gnome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gson/">gson</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hg/">hg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/serialize/">serialize</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/virtualbox/">virtualbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/主从复制/">主从复制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/桌面/">桌面</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/版本控制/">版本控制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/centos/" style="font-size: 20px;">centos</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gnome/" style="font-size: 10px;">gnome</a> <a href="/tags/gson/" style="font-size: 20px;">gson</a> <a href="/tags/hg/" style="font-size: 10px;">hg</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/json/" style="font-size: 20px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/serialize/" style="font-size: 20px;">serialize</a> <a href="/tags/virtualbox/" style="font-size: 10px;">virtualbox</a> <a href="/tags/主从复制/" style="font-size: 10px;">主从复制</a> <a href="/tags/序列化/" style="font-size: 20px;">序列化</a> <a href="/tags/数据库/" style="font-size: 15px;">数据库</a> <a href="/tags/桌面/" style="font-size: 10px;">桌面</a> <a href="/tags/版本控制/" style="font-size: 10px;">版本控制</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2016 聂勇</p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'aofenggithub'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
