@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>使用Precision Helper制作CHM | 聂勇的个人网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="chm,precisionhelper,电子书" />
+    
+    <meta name="description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Precision Helper制作CHM">
+<meta property="og:url" content="http://aofeng.github.io/2014/08/12/使用Precision-Helper制作CHM/index.html">
+<meta property="og:site_name" content="聂勇的个人网站">
+<meta property="og:description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta property="og:image" content="http://aofeng.github.io/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/01.png">
+<meta property="og:updated_time" content="2016-11-07T12:57:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Precision Helper制作CHM">
+<meta name="twitter:description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta name="twitter:image" content="http://aofeng.github.io/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/01.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="聂勇的个人网站" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-86920937-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?ce05028d1f67032125d91077c6c8a765";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">0与1构筑世界，程序员创造时代</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大众软件/">大众软件</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大众软件/CHM/">CHM</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/">开源组件</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Nginx/">Nginx</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/操作系统/">操作系统</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/操作系统/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/操作系统/Windows/">Windows</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/">数据库</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/MySQL/">MySQL</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/版本控制/">版本控制</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/版本控制/Git/">Git</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/">编程</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/HTTP/">HTTP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/Java/">Java</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/Python/">Python</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/TCP-IP/">TCP/IP</a></li></ul></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/大众软件/">大众软件</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/大众软件/CHM/">CHM</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-使用Precision-Helper制作CHM" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        使用Precision Helper制作CHM
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/2014/08/12/使用Precision-Helper制作CHM/" class="article-date">
+    <time datetime="2014-08-12T11:31:28.000Z" itemprop="datePublished">2014-08-12</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/chm/">chm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/precisionhelper/">precisionhelper</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/电子书/">电子书</a></li></ul>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code></p>
+<!-- toc -->
+<ul>
+<li><a href="#&#x4E00;-&#x65B0;&#x5EFA;&#x9879;&#x76EE;">&#x4E00;&#x3001;&#x65B0;&#x5EFA;&#x9879;&#x76EE;</a></li>
+<li><a href="#&#x4E8C;-&#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x5217;&#x8868;">&#x4E8C;&#x3001;&#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x5217;&#x8868;</a></li>
+<li><a href="#&#x4E09;-&#x751F;&#x6210;&#x83DC;&#x5355;">&#x4E09;&#x3001;&#x751F;&#x6210;&#x83DC;&#x5355;</a></li>
+<li><a href="#&#x56DB;-&#x751F;&#x6210;&#x7D22;&#x5F15;">&#x56DB;&#x3001;&#x751F;&#x6210;&#x7D22;&#x5F15;</a></li>
+<li><a href="#&#x4E94;-&#x8BBE;&#x7F6E;&#x9879;&#x76EE;&#x4FE1;&#x606F;">&#x4E94;&#x3001;&#x8BBE;&#x7F6E;&#x9879;&#x76EE;&#x4FE1;&#x606F;</a></li>
+<li><a href="#&#x516D;-&#x751F;&#x6210;chm">&#x516D;&#x3001;&#x751F;&#x6210;CHM</a></li>
+</ul>
+<!-- tocstop -->
+<p>&#x7528;&#x722C;&#x866B;&#x4ECE;&#x7F51;&#x4E0A;&#x6293;&#x53D6;&#x4E00;&#x5806;&#x7F51;&#x9875;&#x8D44;&#x6599;&#x540E;&#xFF0C;&#x65E2;&#x4E0D;&#x65B9;&#x4FBF;&#x67E5;&#x770B;&#x548C;&#x641C;&#x7D22;&#xFF0C;&#x4E5F;&#x4E0D;&#x65B9;&#x4FBF;&#x5B58;&#x50A8;&#x548C;&#x7BA1;&#x7406;&#x3002;&#x6700;&#x7B80;&#x5355;&#x7684;&#x65B9;&#x6CD5;&#x5C06;&#x5B83;&#x4EEC;&#x5236;&#x4F5C;&#x6210;&#x4E00;&#x4E2A;CHM&#x6587;&#x4EF6;&#xFF0C;&#x7528;CHM&#x7684;&#x4E3B;&#x9898;&#x83DC;&#x5355;&#x6765;&#x89E3;&#x51B3;&#x67E5;&#x770B;&#x548C;&#x9009;&#x62E9;&#x7AE0;&#x8282;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x7528;CHM&#x7684;&#x7D22;&#x5F15;&#x6765;&#x89E3;&#x51B3;&#x641C;&#x7D22;&#x7684;&#x95EE;&#x9898;&#x3002;<br>&#x901A;&#x8FC7;&#x641C;&#x7D22;&#x5F15;&#x64CE;&#xFF0C;&#x53EF;&#x4EE5;&#x627E;&#x5230;&#x8BB8;&#x591A;&#x5236;&#x4F5C;CHM&#x7684;&#x8F6F;&#x4EF6;&#xFF0C;&#x4F46;&#x8FD9;&#x91CC;&#x63A8;&#x8350;&#x4E00;&#x6B3E;&#x514D;&#x8D39;&#x7684;&#x8F6F;&#x4EF6;&#xFF1A;<a href="http://www.be-precision.com/products/precision-helper/" target="_blank" rel="external">Precision Helper</a>&#x3002;&#x9009;&#x62E9;&#x5B83;&#x9664;&#x4E86;&#x514D;&#x8D39;&#x5916;&#xFF0C;&#x8FD8;&#x6709;&#x5C31;&#x662F;&#x4F7F;&#x7528;&#x7B80;&#x5355;&#x3002;</p>
+<p>&#x6CE8;&#xFF1A;Precision Helper&#x751F;&#x6210;CHM&#x6587;&#x4EF6;&#x9700;&#x8981;&#x7528;&#x5230;&#x5FAE;&#x8F6F;&#x7684;<a href="http://www.microsoft.com/en-us/download/details.aspx?id=21138" target="_blank" rel="external">Microsoft HTML Help Workshop</a>&#x3002;</p>
+<h1 id="&#x4E00;-&#x65B0;&#x5EFA;&#x9879;&#x76EE;"><a href="#&#x4E00;&#x3001;&#x65B0;&#x5EFA;&#x9879;&#x76EE;" class="headerlink" title="&#x4E00;&#x3001;&#x65B0;&#x5EFA;&#x9879;&#x76EE;"></a>&#x4E00;&#x3001;&#x65B0;&#x5EFA;&#x9879;&#x76EE;</h1><p>1&#x3001;&#x51C6;&#x5907;&#x7528;&#x4E8E;&#x5236;&#x4F5C;CHM&#x7684;HTML&#x6587;&#x4EF6;&#x548C;&#x56FE;&#x7247;&#x5217;&#x8868;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/01.png" alt="&#x7528;&#x4E8E;&#x5236;&#x4F5C;CHM&#x7684;&#x6587;&#x4EF6;&#x5217;&#x8868;" title="&#x7528;&#x4E8E;&#x5236;&#x4F5C;CHM&#x7684;&#x6587;&#x4EF6;&#x5217;&#x8868;"></p>
+<p>2&#x3001;&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;&#x7A7A;&#x767D;&#x9879;&#x76EE;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/02.png" alt="&#x65B0;&#x5EFA;&#x7A7A;&#x767D;&#x9879;&#x76EE;" title="&#x65B0;&#x5EFA;&#x7A7A;&#x767D;&#x9879;&#x76EE;"></p>
+<p>3&#x3001;&#x5728;&#x5B58;&#x653E;HTML&#x7684;&#x76EE;&#x5F55;&#x4E0B;&#x4FDD;&#x5B58;Precision Helper&#x7684;&#x9879;&#x76EE;&#x6587;&#x4EF6;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/03.png" alt="&#x4FDD;&#x5B58;&#x9879;&#x76EE;&#x6587;&#x4EF6;" title="&#x4FDD;&#x5B58;&#x9879;&#x76EE;&#x6587;&#x4EF6;"></p>
+<h1 id="&#x4E8C;-&#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x5217;&#x8868;"><a href="#&#x4E8C;&#x3001;&#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x5217;&#x8868;" class="headerlink" title="&#x4E8C;&#x3001;&#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x5217;&#x8868;"></a>&#x4E8C;&#x3001;&#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x5217;&#x8868;</h1><p>1&#x3001;&#x70B9;&#x51FB;<strong>&#x5DE6;&#x4E0B;&#x89D2;&#x7684;&#x201D;Included files&#x201D;&#x83DC;&#x5355;&#x9879;</strong>&#xFF0C;&#x7136;&#x540E;&#x5728;Included files&#x9762;&#x677F;&#x4E0A;&#x70B9;&#x51FB;&#x201C;Add&#x201D;&#x4E0B;&#x62C9;&#x83DC;&#x5355;&#x9009;&#x62E9;&#x8981;&#x5236;&#x4F5C;CHM&#x7684;&#x6587;&#x4EF6;&#x5217;&#x8868;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br>&#x6CE8;&#xFF1A;&#x5982;&#x679C;&#x9009;&#x62E9;&#x201C;Add files&#x201D;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x6307;&#x5B9A;&#x7684;&#x591A;&#x4E2A;HTML&#x6587;&#x4EF6;&#xFF1B;&#x5982;&#x679C;&#x9009;&#x62E9;&#x201D;Add files from folder&#x201D; &#x4F1A;&#x6DFB;&#x52A0;&#x6307;&#x5B9A;&#x76EE;&#x5F55;&#x4E0B;&#x7684;&#x6240;&#x6709;HTML&#x6587;&#x4EF6;&#x3002;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/04.png" alt="&#x51C6;&#x5907;&#x5BFC;&#x5165;&#x6587;&#x4EF6;" title="&#x51C6;&#x5907;&#x5BFC;&#x5165;&#x6587;&#x4EF6;"></p>
+<p>2&#x3001;&#x70B9;&#x51FB;&#x201D;Add files&#x201D;&#x540E;&#xFF0C;&#x5F39;&#x51FA;&#x9009;&#x62E9;&#x6587;&#x4EF6;&#x7684;&#x7A97;&#x53E3;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/05.png" alt="&#x9009;&#x62E9;&#x5BFC;&#x5165;&#x6587;&#x4EF6;" title="&#x9009;&#x62E9;&#x5BFC;&#x5165;&#x6587;&#x4EF6;"></p>
+<p>3&#x3001;&#x5BFC;&#x5165;&#x9009;&#x62E9;&#x7684;&#x6587;&#x4EF6;&#x5217;&#x8868;&#x540E;&#xFF0C;&#x5728;Included files&#x754C;&#x9762;&#x7684;&#x5217;&#x8868;&#x4E2D;&#x663E;&#x793A;&#x5BFC;&#x5165;&#x7684;&#x6587;&#x4EF6;&#x4FE1;&#x606F;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br>&#x6CE8;&#xFF1A;&#x53EF;&#x4EE5;&#x591A;&#x6B21;&#x64CD;&#x4F5C;&#x52A0;&#x5165;&#x66F4;&#x591A;&#x7684;&#x6587;&#x4EF6;&#x3002;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/06.png" alt="&#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x540E;" title="&#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x540E;"></p>
+<h1 id="&#x4E09;-&#x751F;&#x6210;&#x83DC;&#x5355;"><a href="#&#x4E09;&#x3001;&#x751F;&#x6210;&#x83DC;&#x5355;" class="headerlink" title="&#x4E09;&#x3001;&#x751F;&#x6210;&#x83DC;&#x5355;"></a>&#x4E09;&#x3001;&#x751F;&#x6210;&#x83DC;&#x5355;</h1><p>1&#x3001;&#x9009;&#x62E9;<strong>&#x201C;Tools&#x201D;&#x83DC;&#x5355;</strong>&#xFF0C;&#x70B9;&#x51FB;<strong>&#x201C;Auto add topics&#x201D;&#x5B50;&#x83DC;&#x5355;</strong>&#xFF0C;&#x5F39;&#x51FA;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#x7684;&#x7A97;&#x53E3;&#xFF0C;&#x9ED8;&#x8BA4;&#x9009;&#x62E9;&#x201C;Topics of project include files&#x201D;&#x3002;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/07.png" alt="&#x51C6;&#x5907;&#x751F;&#x6210;&#x83DC;&#x5355;" title="&#x51C6;&#x5907;&#x751F;&#x6210;&#x83DC;&#x5355;"></p>
+<p>2&#x3001;&#x70B9;&#x51FB;&#x201D;Next&#x201D;&#x6309;&#x94AE;&#x751F;&#x6210;&#x83DC;&#x5355;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br>&#x6CE8;&#xFF1A;&#x53EF;&#x4EE5;&#x70B9;&#x51FB;&#x201D;Table of contents&#x201D;&#x5217;&#x8868;&#x7684;&#x5411;&#x4E0A;&#xFF0C;&#x5411;&#x4E0B;&#x6309;&#x94AE;&#x8C03;&#x6574;&#x5404;&#x4E2A;&#x83DC;&#x5355;&#x9879;&#x7684;&#x987A;&#x5E8F;&#xFF0C;&#x5E76;&#x4E14;&#x53EF;&#x4EE5;&#x91CD;&#x547D;&#x540D;&#x83DC;&#x5355;&#x9879;&#x7684;&#x540D;&#x5B57;&#x3002;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/08.png" alt="&#x751F;&#x6210;&#x83DC;&#x5355;&#x5B8C;&#x6210;" title="&#x751F;&#x6210;&#x83DC;&#x5355;&#x5B8C;&#x6210;"></p>
+<h1 id="&#x56DB;-&#x751F;&#x6210;&#x7D22;&#x5F15;"><a href="#&#x56DB;&#x3001;&#x751F;&#x6210;&#x7D22;&#x5F15;" class="headerlink" title="&#x56DB;&#x3001;&#x751F;&#x6210;&#x7D22;&#x5F15;"></a>&#x56DB;&#x3001;&#x751F;&#x6210;&#x7D22;&#x5F15;</h1><p>1&#x3001;&#x9009;&#x62E9;<strong>&#x201C;Tools&#x201D;&#x83DC;&#x5355;</strong>&#xFF0C;&#x70B9;&#x51FB;<strong>&#x201C;Auto add keywords&#x201D;&#x5B50;&#x83DC;&#x5355;</strong>&#xFF0C;&#x5F39;&#x51FA;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#x7684;&#x7A97;&#x53E3;&#xFF0C;&#x9ED8;&#x8BA4;&#x9009;&#x62E9;&#x201C;Topics of current table of  contents&#x201D;&#x3002;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/09.png" alt="&#x751F;&#x6210;&#x7D22;&#x5F15;" title="&#x751F;&#x6210;&#x7D22;&#x5F15;"></p>
+<p>&#x70B9;&#x51FB;&#x201D;Next&#x201D;&#x6309;&#x94AE;&#x751F;&#x6210;&#x7D22;&#x5F15;&#x3002;&#x540C;&#x6837;&#xFF0C;&#x53EF;&#x4EE5;&#x4FEE;&#x6539;&#x7D22;&#x5F15;&#x7684;&#x5173;&#x952E;&#x5B57;&#x3002;</p>
+<h1 id="&#x4E94;-&#x8BBE;&#x7F6E;&#x9879;&#x76EE;&#x4FE1;&#x606F;"><a href="#&#x4E94;&#x3001;&#x8BBE;&#x7F6E;&#x9879;&#x76EE;&#x4FE1;&#x606F;" class="headerlink" title="&#x4E94;&#x3001;&#x8BBE;&#x7F6E;&#x9879;&#x76EE;&#x4FE1;&#x606F;"></a>&#x4E94;&#x3001;&#x8BBE;&#x7F6E;&#x9879;&#x76EE;&#x4FE1;&#x606F;</h1><p>1&#x3001;&#x5207;&#x6362;&#x5230;&#x201C;Project properties&#x201D;&#x9762;&#x677F;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x5230;Contents file&#x548C;Index file&#x5DF2;&#x7ECF;&#x81EA;&#x52A8;&#x586B;&#x5165;&#x4E86;&#x5185;&#x5BB9;&#x3002;&#x70B9;&#x51FB;&#x201D;Default topic&#x201D;&#x540E;&#x9762;&#x7684;&#x6309;&#x94AE;&#x6765;&#x9009;&#x62E9;&#x4E3B;&#x9875;&#xFF0C;&#x70B9;&#x51FB;&#x201D;Compiled help file&#x201D;&#x540E;&#x9762;&#x7684;&#x6309;&#x94AE;&#x6765;&#x9009;&#x62E9;&#x4FDD;&#x5B58;CHM&#x7684;&#x4F4D;&#x7F6E;&#x548C;&#x6587;&#x4EF6;&#x540D;&#x3002;<br>&#x6CE8;&#xFF1A;&#x8FD8;&#x53EF;&#x4EE5;&#x5728;Language and font&#x533A;&#x57DF;&#x8BBE;&#x7F6E;&#x8BED;&#x8A00;&#x548C;&#x5B57;&#x7B26;&#x96C6;&#x3002;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/10.png" alt="&#x8BBE;&#x7F6E;&#x9879;&#x76EE;&#x4FE1;&#x606F;" title="&#x8BBE;&#x7F6E;&#x9879;&#x76EE;&#x4FE1;&#x606F;"></p>
+<p>2&#x3001;&#x8BBE;&#x7F6E;CHM&#x6587;&#x4EF6;&#x7684;&#x6807;&#x9898;&#x3002;&#x5728;&#x754C;&#x9762;&#x7684;&#x6700;&#x53F3;&#x8FB9;&#x6709;&#x56DB;&#x4E2A;&#x83DC;&#x5355;&#x9879;&#xFF0C;&#x70B9;&#x51FB;&#x201D;Object Inspector&#x201D;&#xFF0C;&#x5728;Current project&#x540E;&#x9762;&#x7684;&#x8F93;&#x5165;&#x6846;&#x4E2D;&#x8F93;&#x5165;&#x6807;&#x9898;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/11.png" alt="&#x8BBE;&#x7F6E;CHM&#x6587;&#x4EF6;&#x7684;&#x6807;&#x9898;" title="&#x8BBE;&#x7F6E;CHM&#x6587;&#x4EF6;&#x7684;&#x6807;&#x9898;"></p>
+<h1 id="&#x516D;-&#x751F;&#x6210;chm"><a href="#&#x516D;&#x3001;&#x751F;&#x6210;CHM" class="headerlink" title="&#x516D;&#x3001;&#x751F;&#x6210;CHM"></a>&#x516D;&#x3001;&#x751F;&#x6210;CHM</h1><p>1&#x3001;&#x9009;&#x62E9;<strong>&#x201C;Publishing&#x201D;&#x83DC;&#x5355;</strong>&#xFF0C;&#x70B9;&#x51FB;<strong>&#x201C;Compile&#x201D;&#x5B50;&#x83DC;&#x5355;</strong>&#xFF0C;&#x751F;&#x6210;CHM&#x6587;&#x4EF6;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;<br>&#x6CE8;&#xFF1A;&#x70B9;&#x51FB;&#x201D;Run&#x201D;&#x5B50;&#x83DC;&#x5355;&#x5728;&#x751F;&#x6210;CHM&#x6587;&#x4EF6;&#x540E;&#x4F1A;&#x81EA;&#x52A8;&#x6253;&#x5F00;&#x751F;&#x6210;&#x7684;CHM&#x6587;&#x4EF6;&#x3002;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/12.png" alt="&#x7F16;&#x8BD1;" title="&#x7F16;&#x8BD1;"></p>
+<p>2&#x3001;&#x6253;&#x5F00;&#x751F;&#x6210;&#x7684;CHM&#xFF0C;&#x6548;&#x679C;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#xFF1A;<br><img src="/2014/08/12/&#x4F7F;&#x7528;Precision-Helper&#x5236;&#x4F5C;CHM/13.png" alt="CHM&#x6587;&#x4EF6;&#x67E5;&#x770B;" title="CHM&#x6587;&#x4EF6;&#x67E5;&#x770B;"></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2014/08/12/使用Precision-Helper制作CHM/" data-title="使用Precision Helper制作CHM" data-url="http://aofeng.github.io/2014/08/12/使用Precision-Helper制作CHM/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/aofeng" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2014/08/14/JDK-HashMap源码分析/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            JDK HashMap源码分析
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2014/08/06/Apache-Commons-Pool2-源码分析/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Apache Commons Pool2 源码分析</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2016/01/04/MySQL5-5-&#x5C06;&#x5B57;&#x7B26;&#x96C6;&#x4ECE;utf8&#x5347;&#x7EA7;&#x4E3A;utf8mb4/cover.jpg)" alt="MySQL5.5-将字符集从utf8升级为utf8mb4" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据库/MySQL/">MySQL</a></p>
+                            <p class="item-title"><a href="/2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/" class="title">MySQL5.5-将字符集从utf8升级为utf8mb4</a></p>
+                            <p class="item-date"><time datetime="2016-01-04T12:08:44.000Z" itemprop="datePublished">2016-01-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/17/Gson-自定义反序列化/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/17/Gson-&#x81EA;&#x5B9A;&#x4E49;&#x53CD;&#x5E8F;&#x5217;&#x5316;/cover.jpg)" alt="Gson-自定义反序列化" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/17/Gson-自定义反序列化/" class="title">Gson-自定义反序列化</a></p>
+                            <p class="item-date"><time datetime="2015-08-17T12:21:12.000Z" itemprop="datePublished">2015-08-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/14/Gson-自定义序列化/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/14/Gson-&#x81EA;&#x5B9A;&#x4E49;&#x5E8F;&#x5217;&#x5316;/cover.jpg)" alt="Gson-自定义序列化" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/14/Gson-自定义序列化/" class="title">Gson-自定义序列化</a></p>
+                            <p class="item-date"><time datetime="2015-08-14T12:13:56.000Z" itemprop="datePublished">2015-08-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/12/Gson-序列化与反序列化基础操作/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/12/Gson-&#x5E8F;&#x5217;&#x5316;&#x4E0E;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x57FA;&#x7840;&#x64CD;&#x4F5C;/cover.jpg)" alt="Gson-序列化与反序列化基础操作" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/12/Gson-序列化与反序列化基础操作/" class="title">Gson-序列化与反序列化基础操作</a></p>
+                            <p class="item-date"><time datetime="2015-08-12T11:57:18.000Z" itemprop="datePublished">2015-08-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/07/21/将项目从HG迁移至Git/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/07/21/&#x5C06;&#x9879;&#x76EE;&#x4ECE;HG&#x8FC1;&#x79FB;&#x81F3;Git/cover.png)" alt="将项目从HG迁移至Git" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/版本控制/">版本控制</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/版本控制/Git/">Git</a></p>
+                            <p class="item-title"><a href="/2015/07/21/将项目从HG迁移至Git/" class="title">将项目从HG迁移至Git</a></p>
+                            <p class="item-date"><time datetime="2015-07-21T12:38:18.000Z" itemprop="datePublished">2015-07-21</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/大众软件/">大众软件</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/大众软件/CHM/">CHM</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/">开源组件</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Nginx/">Nginx</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/Windows/">Windows</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/版本控制/">版本控制</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/版本控制/Git/">Git</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/">编程</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/编程/HTTP/">HTTP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/">Java</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/TCP-IP/">TCP/IP</a><span class="category-list-count">1</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cache/">cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos/">centos</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chm/">chm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gnome/">gnome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gson/">gson</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gui/">gui</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hashmap/">hashmap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hg/">hg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ip/">ip</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jedis/">jedis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kitty/">kitty</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/less/">less</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/man/">man</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netsh/">netsh</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pool/">pool</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/precisionhelper/">precisionhelper</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/putty/">putty</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/serialize/">serialize</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/">ssh</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/">tcp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/virtualbox/">virtualbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/">windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xming/">xming</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xwindow/">xwindow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zmodem/">zmodem</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/主从复制/">主从复制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/哈希表/">哈希表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/对象池/">对象池</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/桌面/">桌面</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/版本控制/">版本控制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/电子书/">电子书</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/缓存/">缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/转发/">转发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/连接/">连接</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/－python-－memcached-nosql/">－python －memcached - nosql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/－python-－mysql/">－python －mysql</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/apache/" style="font-size: 10px;">apache</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/centos/" style="font-size: 15px;">centos</a> <a href="/tags/chm/" style="font-size: 10px;">chm</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gnome/" style="font-size: 10px;">gnome</a> <a href="/tags/gson/" style="font-size: 15px;">gson</a> <a href="/tags/gui/" style="font-size: 10px;">gui</a> <a href="/tags/hashmap/" style="font-size: 10px;">hashmap</a> <a href="/tags/hg/" style="font-size: 10px;">hg</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jedis/" style="font-size: 12.5px;">jedis</a> <a href="/tags/json/" style="font-size: 15px;">json</a> <a href="/tags/kitty/" style="font-size: 10px;">kitty</a> <a href="/tags/less/" style="font-size: 10px;">less</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/man/" style="font-size: 10px;">man</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/netsh/" style="font-size: 10px;">netsh</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pool/" style="font-size: 10px;">pool</a> <a href="/tags/precisionhelper/" style="font-size: 10px;">precisionhelper</a> <a href="/tags/putty/" style="font-size: 12.5px;">putty</a> <a href="/tags/redis/" style="font-size: 12.5px;">redis</a> <a href="/tags/serialize/" style="font-size: 15px;">serialize</a> <a href="/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/tags/tcp/" style="font-size: 10px;">tcp</a> <a href="/tags/virtualbox/" style="font-size: 10px;">virtualbox</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/xming/" style="font-size: 10px;">xming</a> <a href="/tags/xwindow/" style="font-size: 10px;">xwindow</a> <a href="/tags/zmodem/" style="font-size: 10px;">zmodem</a> <a href="/tags/主从复制/" style="font-size: 10px;">主从复制</a> <a href="/tags/哈希表/" style="font-size: 10px;">哈希表</a> <a href="/tags/对象池/" style="font-size: 10px;">对象池</a> <a href="/tags/序列化/" style="font-size: 15px;">序列化</a> <a href="/tags/数据库/" style="font-size: 15px;">数据库</a> <a href="/tags/桌面/" style="font-size: 10px;">桌面</a> <a href="/tags/版本控制/" style="font-size: 10px;">版本控制</a> <a href="/tags/电子书/" style="font-size: 10px;">电子书</a> <a href="/tags/缓存/" style="font-size: 10px;">缓存</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/连接/" style="font-size: 10px;">连接</a> <a href="/tags/－python-－memcached-nosql/" style="font-size: 10px;">－python －memcached - nosql</a> <a href="/tags/－python-－mysql/" style="font-size: 10px;">－python －mysql</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2016 聂勇</p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'aofenggithub'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
