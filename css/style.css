@@ -1129,7 +1129,7 @@ a.article-title:hover {
 .article-entry h5,
 .article-entry h6 {
   line-height: 1.3em;
-  margin: 1.3em 0;
+  margin: 1em 0 0.3em 0;
 }
 .article-entry a {
   color: #006bde;
