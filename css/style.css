@@ -1112,7 +1112,7 @@ a.article-title:hover {
 }
 .article-entry p,
 .article-entry table {
-  margin: 1.0em 0;
+  margin: 1em 0;
 }
 .article-entry h1,
 .article-entry h2,
@@ -1795,7 +1795,7 @@ i.icon:before {
   padding-right: 20px;
 }
 .article-entry .highlight {
-  margin: 1.6em 0;
+  margin: 1em 0;
 }
 .article-entry .highlight .line {
   height: 1.6em;

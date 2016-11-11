@@ -710,9 +710,9 @@ Configuration summary
     
       <category term="linux" scheme="http://aofeng.github.io/tags/linux/"/>
     
-      <category term="centos" scheme="http://aofeng.github.io/tags/centos/"/>
-    
       <category term="网络" scheme="http://aofeng.github.io/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="centos" scheme="http://aofeng.github.io/tags/centos/"/>
     
   </entry>
   
@@ -1282,9 +1282,9 @@ nieyong  29291 28886  0 17:36 pts/2    00:00:00 /home/nieyong/local/mysql-5543/b
       <category term="Windows" scheme="http://aofeng.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Windows/"/>
     
     
-      <category term="putty" scheme="http://aofeng.github.io/tags/putty/"/>
-    
       <category term="xwindow" scheme="http://aofeng.github.io/tags/xwindow/"/>
+    
+      <category term="putty" scheme="http://aofeng.github.io/tags/putty/"/>
     
       <category term="xming" scheme="http://aofeng.github.io/tags/xming/"/>
     
