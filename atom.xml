@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://aofeng.github.io/"/>
-  <updated>2016-11-06T12:06:15.000Z</updated>
+  <updated>2016-11-15T13:06:25.000Z</updated>
   <id>http://aofeng.github.io/</id>
   
   <author>
@@ -14,6 +14,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>DbUnit-常见错误解决方法</title>
+    <link href="http://aofeng.github.io/2016/11/15/DbUnit-%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"/>
+    <id>http://aofeng.github.io/2016/11/15/DbUnit-常见错误解决方法/</id>
+    <published>2016-11-15T13:06:25.000Z</published>
+    <updated>2016-11-15T13:06:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code></p>
+
+<!-- toc -->
+<ul>
+<li><a href="#&#x73AF;&#x5883;">&#x73AF;&#x5883;</a></li>
+<li><a href="#&#x4E00;-ambiguoustablenameexception">&#x4E00;&#x3001;AmbiguousTableNameException</a></li>
+<li><a href="#&#x4E8C;-noprimarykeyexception">&#x4E8C;&#x3001;NoPrimaryKeyException</a></li>
+<li><a href="#&#x4E09;-unsupportedoperationexception-only-one-iterator-allowed">&#x4E09;&#x3001;UnsupportedOperationException: Only one iterator allowed!</a></li>
+</ul>
+<!-- tocstop -->
+<h1 id="&#x73AF;&#x5883;"><a href="#&#x73AF;&#x5883;" class="headerlink" title="&#x73AF;&#x5883;"></a>&#x73AF;&#x5883;</h1><ul>
+<li>dbunit-2.4.5</li>
+</ul>
+<h1 id="&#x4E00;-ambiguoustablenameexception"><a href="#&#x4E00;&#x3001;AmbiguousTableNameException" class="headerlink" title="&#x4E00;&#x3001;AmbiguousTableNameException"></a>&#x4E00;&#x3001;AmbiguousTableNameException</h1><p>&#x8BE6;&#x7EC6;&#x7684;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">org.dbunit.database.AmbiguousTableNameException: AREA_GROUP</div><div class="line"> at org.dbunit.dataset.OrderedTableNameMap.add(OrderedTableNameMap.java:198)</div><div class="line"> at org.dbunit.database.DatabaseDataSet.initialize(DatabaseDataSet.java:227)</div><div class="line"> at org.dbunit.database.DatabaseDataSet.getTableMetaData(DatabaseDataSet.java:275)</div><div class="line"> at org.dbunit.operation.DeleteAllOperation.execute(DeleteAllOperation.java:109)</div><div class="line"> at org.dbunit.operation.CompositeOperation.execute(CompositeOperation.java:79)</div><div class="line"> at org.dbunit.AbstractDatabaseTester.executeOperation(AbstractDatabaseTester.java:190)</div><div class="line"> at org.dbunit.AbstractDatabaseTester.onSetup(AbstractDatabaseTester.java:103)</div><div class="line"> at org.dbunit.DatabaseTestCase.setUp(DatabaseTestCase.java:156)</div><div class="line"> at cn.aofeng.dbunit.PersonalTester.setUp(PersonalTester.java:40)</div><div class="line"> at junit.framework.TestCase.runBare(TestCase.java:125)</div><div class="line"> at junit.framework.TestResult$1.protect(TestResult.java:106)</div><div class="line"> at junit.framework.TestResult.runProtected(TestResult.java:124)</div><div class="line"> at junit.framework.TestResult.run(TestResult.java:109)</div><div class="line"> at junit.framework.TestCase.run(TestCase.java:118)</div><div class="line"> at junit.framework.TestSuite.runTest(TestSuite.java:208)</div><div class="line"> at junit.framework.TestSuite.run(TestSuite.java:203)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:460)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:673)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:386)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:196)</div></pre></td></tr></table></figure></p>
+<p><strong>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</strong>&#xFF1A;&#x6307;&#x5B9A;schema&#x3002;<br>&#x4F8B;&#x5982;&#xFF1A;System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, &#x201C;aidmcu&#x201D;);   </p>
+<h1 id="&#x4E8C;-noprimarykeyexception"><a href="#&#x4E8C;&#x3001;NoPrimaryKeyException" class="headerlink" title="&#x4E8C;&#x3001;NoPrimaryKeyException"></a>&#x4E8C;&#x3001;NoPrimaryKeyException</h1><p>&#x8BE6;&#x7EC6;&#x7684;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">org.dbunit.dataset.NoPrimaryKeyException: PERSONAL</div><div class="line"> at org.dbunit.operation.UpdateOperation.getOperationData(UpdateOperation.java:72)</div><div class="line"> at org.dbunit.operation.RefreshOperation$UpdateRowOperation.&lt;init&gt;(RefreshOperation.java:266)</div><div class="line"> at org.dbunit.operation.RefreshOperation.createUpdateOperation(RefreshOperation.java:142)</div><div class="line"> at org.dbunit.operation.RefreshOperation.execute(RefreshOperation.java:100)</div><div class="line"> at org.dbunit.AbstractDatabaseTester.executeOperation(AbstractDatabaseTester.java:190)</div><div class="line"> at org.dbunit.AbstractDatabaseTester.onSetup(AbstractDatabaseTester.java:103)</div><div class="line"> at org.dbunit.DatabaseTestCase.setUp(DatabaseTestCase.java:156)</div><div class="line"> at cn.aofeng.dbunit.PersonalTester.setUp(PersonalTester.java:42)</div><div class="line"> at junit.framework.TestCase.runBare(TestCase.java:125)</div><div class="line"> at junit.framework.TestResult$1.protect(TestResult.java:106)</div><div class="line"> at junit.framework.TestResult.runProtected(TestResult.java:124)</div><div class="line"> at junit.framework.TestResult.run(TestResult.java:109)</div><div class="line"> at junit.framework.TestCase.run(TestCase.java:118)</div><div class="line"> at junit.framework.TestSuite.runTest(TestSuite.java:208)</div><div class="line"> at junit.framework.TestSuite.run(TestSuite.java:203)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:460)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:673)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:386)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:196)</div></pre></td></tr></table></figure></p>
+<p><strong>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</strong>&#xFF1A;&#x7ED9;&#x8868; PERSONAL &#x589E;&#x52A0;&#x4E3B;&#x952E;&#x3002;</p>
+<h1 id="&#x4E09;-unsupportedoperationexception-only-one-iterator-allowed"><a href="#&#x4E09;&#x3001;UnsupportedOperationException-Only-one-iterator-allowed" class="headerlink" title="&#x4E09;&#x3001;UnsupportedOperationException: Only one iterator allowed!"></a>&#x4E09;&#x3001;UnsupportedOperationException: Only one iterator allowed!</h1><p>&#x8BE6;&#x7EC6;&#x7684;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">java.lang.UnsupportedOperationException: Only one iterator allowed!</div><div class="line"> at org.dbunit.dataset.stream.StreamingDataSet.createIterator(StreamingDataSet.java:71)</div><div class="line"> at org.dbunit.dataset.AbstractDataSet.iterator(AbstractDataSet.java:187)</div><div class="line"> at org.dbunit.operation.AbstractBatchOperation.iterator(AbstractBatchOperation.java:93)</div><div class="line"> at org.dbunit.operation.AbstractBatchOperation.execute(AbstractBatchOperation.java:129)</div><div class="line"> at org.dbunit.operation.CompositeOperation.execute(CompositeOperation.java:79)</div><div class="line"> at org.dbunit.AbstractDatabaseTester.executeOperation(AbstractDatabaseTester.java:190)</div><div class="line"> at org.dbunit.AbstractDatabaseTester.onSetup(AbstractDatabaseTester.java:103)</div><div class="line"> at org.dbunit.DatabaseTestCase.setUp(DatabaseTestCase.java:156)</div><div class="line"> at cn.aofeng.dbunit.PersonalTester.setUp(PersonalTester.java:41)</div><div class="line"> at junit.framework.TestCase.runBare(TestCase.java:125)</div><div class="line"> at junit.framework.TestResult$1.protect(TestResult.java:106)</div><div class="line"> at junit.framework.TestResult.runProtected(TestResult.java:124)</div><div class="line"> at junit.framework.TestResult.run(TestResult.java:109)</div><div class="line"> at junit.framework.TestCase.run(TestCase.java:118)</div><div class="line"> at junit.framework.TestSuite.runTest(TestSuite.java:208)</div><div class="line"> at junit.framework.TestSuite.run(TestSuite.java:203)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:460)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:673)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:386)</div><div class="line"> at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:196)</div></pre></td></tr></table></figure></p>
+<p><strong>&#x539F;&#x56E0;</strong>&#xFF1A;XML&#x5185;&#x5BB9;&#x683C;&#x5F0F;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">dataset</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">&quot;SRC_FW_PKG&quot;</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">column</span>&gt;</span>PKG_ID<span class="tag">&lt;/<span class="name">column</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">column</span>&gt;</span>PKG_TYPE<span class="tag">&lt;/<span class="name">column</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">column</span>&gt;</span>MODEL_ID<span class="tag">&lt;/<span class="name">column</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">column</span>&gt;</span>MANU_ID<span class="tag">&lt;/<span class="name">column</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">column</span>&gt;</span>SOURCE_VER<span class="tag">&lt;/<span class="name">column</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">column</span>&gt;</span>TARGET_VER<span class="tag">&lt;/<span class="name">column</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">column</span>&gt;</span>PKG_SIZE<span class="tag">&lt;/<span class="name">column</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">row</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>6111<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>396<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>VER1.1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>VER1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>396<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">row</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">table</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dataset</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>&#x5374;&#x7528; FlatXmlDataSet &#x6765;&#x89E3;&#x6790;&#x3002;</p>
+<p><strong>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</strong>&#xFF1A;&#x7528; XmlDataSet &#x89E3;&#x6790;XML&#x6587;&#x4EF6;&#x3002;<br>&#x4EA7;&#x751F; UnsupportedOperationException &#x7684;&#x6709;&#x591A;&#x79CD;&#x539F;&#x56E0;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#x4EC5;&#x4F9B;&#x53C2;&#x8003;&#x3002;</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4F
+    
+    </summary>
+    
+      <category term="编程" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="Java" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/Java/"/>
+    
+      <category term="DbUnit" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/Java/DbUnit/"/>
+    
+    
+      <category term="java" scheme="http://aofeng.github.io/tags/java/"/>
+    
+      <category term="dbunit" scheme="http://aofeng.github.io/tags/dbunit/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL5.5-将字符集从utf8升级为utf8mb4</title>
@@ -192,7 +241,7 @@
     <link href="http://aofeng.github.io/2015/08/17/Gson-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
     <id>http://aofeng.github.io/2015/08/17/Gson-自定义反序列化/</id>
     <published>2015-08-17T12:21:12.000Z</published>
-    <updated>2016-11-06T12:06:07.000Z</updated>
+    <updated>2016-11-15T13:06:09.000Z</updated>
     
     <content type="html"><![CDATA[<p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code><br><img src="/2015/08/17/Gson-&#x81EA;&#x5B9A;&#x4E49;&#x53CD;&#x5E8F;&#x5217;&#x5316;/cover.jpg" alt="2015-&#x9633;&#x5851;&#x5341;&#x91CC;&#x753B;&#x5ECA;" title="2015-&#x9633;&#x5851;&#x5341;&#x91CC;&#x753B;&#x5ECA;"></p>
 <!-- toc -->
@@ -239,6 +288,8 @@
     
       <category term="Java" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/Java/"/>
     
+      <category term="Gson" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/Java/Gson/"/>
+    
     
       <category term="java" scheme="http://aofeng.github.io/tags/java/"/>
     
@@ -257,7 +308,7 @@
     <link href="http://aofeng.github.io/2015/08/14/Gson-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BA%8F%E5%88%97%E5%8C%96/"/>
     <id>http://aofeng.github.io/2015/08/14/Gson-自定义序列化/</id>
     <published>2015-08-14T12:13:56.000Z</published>
-    <updated>2016-11-06T12:06:11.000Z</updated>
+    <updated>2016-11-15T13:06:16.000Z</updated>
     
     <content type="html"><![CDATA[<p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code><br><img src="/2015/08/14/Gson-&#x81EA;&#x5B9A;&#x4E49;&#x5E8F;&#x5217;&#x5316;/cover.jpg" alt="2015-&#x6842;&#x6797;&#x5C71;&#x6C34;" title="2015-&#x6842;&#x6797;&#x5C71;&#x6C34;"></p>
 <!-- toc -->
@@ -306,6 +357,8 @@
     
       <category term="Java" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/Java/"/>
     
+      <category term="Gson" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/Java/Gson/"/>
+    
     
       <category term="java" scheme="http://aofeng.github.io/tags/java/"/>
     
@@ -324,7 +377,7 @@
     <link href="http://aofeng.github.io/2015/08/12/Gson-%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C/"/>
     <id>http://aofeng.github.io/2015/08/12/Gson-序列化与反序列化基础操作/</id>
     <published>2015-08-12T11:57:18.000Z</published>
-    <updated>2016-11-06T12:06:02.000Z</updated>
+    <updated>2016-11-15T13:05:58.000Z</updated>
     
     <content type="html"><![CDATA[<p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code><br><img src="/2015/08/12/Gson-&#x5E8F;&#x5217;&#x5316;&#x4E0E;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x57FA;&#x7840;&#x64CD;&#x4F5C;/cover.jpg" alt="2015-&#x5916;&#x4F36;&#x4EC3;&#x5C9B;&#x5C71;&#x9876;&#x4FEF;&#x77B0;&#x5927;&#x6D77;&#x8D77;&#x96FE;" title="2015-&#x5916;&#x4F36;&#x4EC3;&#x5C9B;&#x5C71;&#x9876;&#x4FEF;&#x77B0;&#x5927;&#x6D77;&#x8D77;&#x96FE;"></p>
 <!-- toc -->
@@ -392,6 +445,8 @@
       <category term="编程" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
       <category term="Java" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/Java/"/>
+    
+      <category term="Gson" scheme="http://aofeng.github.io/categories/%E7%BC%96%E7%A8%8B/Java/Gson/"/>
     
     
       <category term="java" scheme="http://aofeng.github.io/tags/java/"/>
@@ -1576,65 +1631,6 @@ nieyong  29291 28886  0 17:36 pts/2    00:00:00 /home/nieyong/local/mysql-5543/b
       <category term="转发" scheme="http://aofeng.github.io/tags/%E8%BD%AC%E5%8F%91/"/>
     
       <category term="windows" scheme="http://aofeng.github.io/tags/windows/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-使用Java客户端Jedis</title>
-    <link href="http://aofeng.github.io/2014/08/29/Redis-%E4%BD%BF%E7%94%A8Java%E5%AE%A2%E6%88%B7%E7%AB%AFJedis/"/>
-    <id>http://aofeng.github.io/2014/08/29/Redis-使用Java客户端Jedis/</id>
-    <published>2014-08-29T12:31:07.000Z</published>
-    <updated>2016-11-08T07:35:45.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code></p>
-<img src="/2014/08/29/Redis-&#x4F7F;&#x7528;Java&#x5BA2;&#x6237;&#x7AEF;Jedis/01.jpg" alt="2007-&#x56DB;&#x5DDD;&#x9EC4;&#x9F99;" title="2007-&#x56DB;&#x5DDD;&#x9EC4;&#x9F99;">
-<!-- toc -->
-<ul>
-<li><a href="#&#x9884;&#x5907;">&#x9884;&#x5907;</a></li>
-<li><a href="#&#x4F7F;&#x7528;&#x5355;&#x8FDE;&#x63A5;">&#x4F7F;&#x7528;&#x5355;&#x8FDE;&#x63A5;</a></li>
-<li><a href="#&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;">&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;</a></li>
-<li><a href="#&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;&#x5206;&#x5E03;&#x5F0F;">&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;+&#x5206;&#x5E03;&#x5F0F;</a></li>
-</ul>
-<!-- tocstop -->
-<p>&#x524D;&#x4E00;&#x7BC7;&#x6587;&#x7AE0;&#x300A;Redis&#x547D;&#x4EE4;&#x6307;&#x5357;&#x300B;&#x8BB2;&#x89E3;&#x4E86;&#x901A;&#x8FC7;&#x547D;&#x4EE4;&#x884C;&#x7684;&#x65B9;&#x5F0F;&#x6267;&#x884C;Key=&gt;&#x7684;&#x5B58;&#x50A8;&#x64CD;&#x4F5C;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x7684;&#x9879;&#x76EE;&#x5F00;&#x53D1;&#x4E2D;&#xFF0C;&#x5404;&#x79CD;&#x8BED;&#x8A00;&#x662F;&#x4F7F;&#x7528;Redis&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x5E93;&#x6765;&#x4E0E;Redis&#x4EA4;&#x4E92;&#x3002;&#x9488;&#x5BF9;Java&#x8BED;&#x8A00;&#xFF0C;Redis&#x5B98;&#x65B9;&#x63A8;&#x8350;Jedis&#x3002;</p>
-<p>Jedis&#x63D0;&#x4F9B;&#x4E86;&#x591A;&#x79CD;&#x64CD;&#x4F5C;&#x65B9;&#x5F0F;&#xFF1A;&#x5355;&#x673A;&#x5355;&#x8FDE;&#x63A5;&#x65B9;&#x5F0F;&#x3001;&#x5355;&#x673A;&#x8FDE;&#x63A5;&#x6C60;&#x65B9;&#x5F0F;&#x3001;&#x591A;&#x673A;&#x5206;&#x5E03;&#x5F0F;+&#x8FDE;&#x63A5;&#x6C60;&#x65B9;&#x5F0F;&#x3002;</p>
-<h1 id="&#x9884;&#x5907;"><a href="#&#x9884;&#x5907;" class="headerlink" title="&#x9884;&#x5907;"></a>&#x9884;&#x5907;</h1><ul>
-<li>jedis-2.5.2</li>
-<li>commons-pool2-2.2.jar</li>
-</ul>
-<h1 id="&#x4F7F;&#x7528;&#x5355;&#x8FDE;&#x63A5;"><a href="#&#x4F7F;&#x7528;&#x5355;&#x8FDE;&#x63A5;" class="headerlink" title="&#x4F7F;&#x7528;&#x5355;&#x8FDE;&#x63A5;"></a>&#x4F7F;&#x7528;&#x5355;&#x8FDE;&#x63A5;</h1><p>&#x6B64;&#x65B9;&#x5F0F;&#x4EC5;&#x5EFA;&#x8BAE;&#x7528;&#x4E8E;&#x5F00;&#x53D1;&#x73AF;&#x5883;&#x505A;&#x8C03;&#x8BD5;&#x7528;&#x3002;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// &#x521B;&#x5EFA;&#x8FDE;&#x63A5;</span></div><div class="line">String host = <span class="string">&quot;192.168.56.102&quot;</span>;</div><div class="line"><span class="keyword">int</span> port = <span class="number">6379</span>;</div><div class="line">Jedis client = <span class="keyword">new</span> Jedis(host, port);</div><div class="line"></div><div class="line"><span class="comment">// &#x6267;&#x884C;set&#x6307;&#x4EE4;</span></div><div class="line">String result = client.set(<span class="string">&quot;key-string&quot;</span>, <span class="string">&quot;Hello, Redis!&quot;</span>);</div><div class="line">System.out.println( String.format(<span class="string">&quot;set&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:%s&quot;</span>, result) );</div><div class="line"></div><div class="line"><span class="comment">// &#x6267;&#x884C;get&#x6307;&#x4EE4;</span></div><div class="line">String value = client.get(<span class="string">&quot;key-string&quot;</span>);</div><div class="line">System.out.println( String.format(<span class="string">&quot;get&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:%s&quot;</span>, value) );</div></pre></td></tr></table></figure></p>
-<p>&#x8FD0;&#x884C;&#x4E0A;&#x8FF0;&#x4EE3;&#x7801;&#xFF0C;&#x63A7;&#x5236;&#x53F0;&#x8F93;&#x51FA;&#xFF1A;</p>
-<blockquote>
-<p>set&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:OK<br>get&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:Hello, Redis!</p>
-</blockquote>
-<h1 id="&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;"><a href="#&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;" class="headerlink" title="&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;"></a>&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;</h1><p>&#x6B64;&#x65B9;&#x5F0F;&#x9002;&#x7528;&#x4E8E;&#x4EC5;&#x4F7F;&#x7528;&#x5355;&#x4E2A;Redis&#x5B9E;&#x4F8B;&#x7684;&#x573A;&#x666F;&#x3002;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// &#x751F;&#x6210;&#x8FDE;&#x63A5;&#x6C60;&#x914D;&#x7F6E;&#x4FE1;&#x606F;</span></div><div class="line">JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</div><div class="line">config.setMaxIdle(<span class="number">10</span>);</div><div class="line">config.setMaxTotal(<span class="number">30</span>);</div><div class="line">config.setMaxWaitMillis(<span class="number">3</span>*<span class="number">1000</span>);</div><div class="line"></div><div class="line"><span class="comment">// &#x5728;&#x5E94;&#x7528;&#x521D;&#x59CB;&#x5316;&#x7684;&#x65F6;&#x5019;&#x751F;&#x6210;&#x8FDE;&#x63A5;&#x6C60;</span></div><div class="line">JedisPool pool = <span class="keyword">new</span> JedisPool(config, <span class="string">&quot;192.168.56.102&quot;</span>, <span class="number">6379</span>);</div><div class="line"></div><div class="line"><span class="comment">// &#x5728;&#x4E1A;&#x52A1;&#x64CD;&#x4F5C;&#x65F6;&#xFF0C;&#x4ECE;&#x8FDE;&#x63A5;&#x6C60;&#x83B7;&#x53D6;&#x8FDE;&#x63A5;</span></div><div class="line">Jedis client = pool.getResource();</div><div class="line"><span class="keyword">try</span> {</div><div class="line">    <span class="comment">// &#x6267;&#x884C;&#x6307;&#x4EE4;</span></div><div class="line">    String result = client.set(<span class="string">&quot;key-string&quot;</span>, <span class="string">&quot;Hello, Redis!&quot;</span>);</div><div class="line">    System.out.println( String.format(<span class="string">&quot;set&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:%s&quot;</span>, result) );</div><div class="line">    String value = client.get(<span class="string">&quot;key-string&quot;</span>);</div><div class="line">    System.out.println( String.format(<span class="string">&quot;get&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:%s&quot;</span>, value) );</div><div class="line">} <span class="keyword">catch</span> (Exception e) {</div><div class="line">    <span class="comment">// <span class="doctag">TODO:</span> handle exception</span></div><div class="line">} <span class="keyword">finally</span> {</div><div class="line">    <span class="comment">// &#x4E1A;&#x52A1;&#x64CD;&#x4F5C;&#x5B8C;&#x6210;&#xFF0C;&#x5C06;&#x8FDE;&#x63A5;&#x8FD4;&#x56DE;&#x7ED9;&#x8FDE;&#x63A5;&#x6C60;</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != client) {</div><div class="line">        pool.returnResource(client);</div><div class="line">    }</div><div class="line">} <span class="comment">// end of try block</span></div><div class="line"></div><div class="line"><span class="comment">// &#x5E94;&#x7528;&#x5173;&#x95ED;&#x65F6;&#xFF0C;&#x91CA;&#x653E;&#x8FDE;&#x63A5;&#x6C60;&#x8D44;&#x6E90;</span></div><div class="line">pool.destroy();</div></pre></td></tr></table></figure></p>
-<p>&#x8FD0;&#x884C;&#x4E0A;&#x8FF0;&#x4EE3;&#x7801;&#xFF0C;&#x63A7;&#x5236;&#x53F0;&#x8F93;&#x51FA;&#xFF1A;</p>
-<blockquote>
-<p>set&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:OK<br>get&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:Hello, Redis!</p>
-</blockquote>
-<h1 id="&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;&#x5206;&#x5E03;&#x5F0F;"><a href="#&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;-&#x5206;&#x5E03;&#x5F0F;" class="headerlink" title="&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;+&#x5206;&#x5E03;&#x5F0F;"></a>&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x6C60;+&#x5206;&#x5E03;&#x5F0F;</h1><p>&#x5728;&#x89C4;&#x6A21;&#x8F83;&#x5927;&#x7684;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x5F80;&#x5F80;&#x4F1A;&#x6709;&#x591A;&#x4E2A;Redis&#x5B9E;&#x4F8B;&#x505A;&#x8D1F;&#x8F7D;&#x5747;&#x8861;&#x3002;&#x5E76;&#x4E14;&#x8FD8;&#x5B9E;&#x73B0;&#x4E3B;&#x4ECE;&#x5907;&#x4EFD;&#xFF0C;&#x5F53;&#x4E3B;&#x5B9E;&#x4F8B;&#x53D1;&#x751F;&#x6545;&#x969C;&#x65F6;&#xFF0C;&#x5207;&#x6362;&#x81F3;&#x4ECE;&#x5B9E;&#x4F8B;&#x63D0;&#x4F9B;&#x670D;&#x52A1;&#x3002;<br>&#x7C7B;&#x4F3C;&#x4E8E;Memcached&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;Jedis&#x4E5F;&#x63D0;&#x4F9B;&#x4E86;&#x5BA2;&#x6237;&#x7AEF;&#x5206;&#x5E03;&#x5F0F;&#x64CD;&#x4F5C;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x91C7;&#x7528;&#x4E00;&#x81F4;&#x6027;&#x54C8;&#x5E0C;&#x7B97;&#x6CD5;&#x3002;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// &#x751F;&#x6210;&#x591A;&#x673A;&#x8FDE;&#x63A5;&#x4FE1;&#x606F;&#x5217;&#x8868;</span></div><div class="line">List&lt;JedisShardInfo&gt; shards = <span class="keyword">new</span> ArrayList&lt;JedisShardInfo&gt;();</div><div class="line">shards.add( <span class="keyword">new</span> JedisShardInfo(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">6379</span>) );</div><div class="line">shards.add( <span class="keyword">new</span> JedisShardInfo(<span class="string">&quot;192.168.56.102&quot;</span>, <span class="number">6379</span>) );</div><div class="line"></div><div class="line"><span class="comment">// &#x751F;&#x6210;&#x8FDE;&#x63A5;&#x6C60;&#x914D;&#x7F6E;&#x4FE1;&#x606F;</span></div><div class="line">JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</div><div class="line">config.setMaxIdle(<span class="number">10</span>);</div><div class="line">config.setMaxTotal(<span class="number">30</span>);</div><div class="line">config.setMaxWaitMillis(<span class="number">3</span>*<span class="number">1000</span>);</div><div class="line"></div><div class="line"><span class="comment">// &#x5728;&#x5E94;&#x7528;&#x521D;&#x59CB;&#x5316;&#x7684;&#x65F6;&#x5019;&#x751F;&#x6210;&#x8FDE;&#x63A5;&#x6C60;</span></div><div class="line">ShardedJedisPool pool = <span class="keyword">new</span> ShardedJedisPool(config, shards);</div><div class="line"></div><div class="line"><span class="comment">// &#x5728;&#x4E1A;&#x52A1;&#x64CD;&#x4F5C;&#x65F6;&#xFF0C;&#x4ECE;&#x8FDE;&#x63A5;&#x6C60;&#x83B7;&#x53D6;&#x8FDE;&#x63A5;</span></div><div class="line">ShardedJedis client = pool.getResource();</div><div class="line"><span class="keyword">try</span> {</div><div class="line">    <span class="comment">// &#x6267;&#x884C;&#x6307;&#x4EE4;</span></div><div class="line">    String result = client.set(<span class="string">&quot;key-string&quot;</span>, <span class="string">&quot;Hello, Redis!&quot;</span>);</div><div class="line">    System.out.println( String.format(<span class="string">&quot;set&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:%s&quot;</span>, result) );</div><div class="line">    String value = client.get(<span class="string">&quot;key-string&quot;</span>);</div><div class="line">    System.out.println( String.format(<span class="string">&quot;get&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:%s&quot;</span>, value) );</div><div class="line">} <span class="keyword">catch</span> (Exception e) {</div><div class="line">    <span class="comment">// <span class="doctag">TODO:</span> handle exception</span></div><div class="line">} <span class="keyword">finally</span> {</div><div class="line">    <span class="comment">// &#x4E1A;&#x52A1;&#x64CD;&#x4F5C;&#x5B8C;&#x6210;&#xFF0C;&#x5C06;&#x8FDE;&#x63A5;&#x8FD4;&#x56DE;&#x7ED9;&#x8FDE;&#x63A5;&#x6C60;</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != client) {</div><div class="line">        pool.returnResource(client);</div><div class="line">    }</div><div class="line">} <span class="comment">// end of try block</span></div><div class="line"></div><div class="line"><span class="comment">// &#x5E94;&#x7528;&#x5173;&#x95ED;&#x65F6;&#xFF0C;&#x91CA;&#x653E;&#x8FDE;&#x63A5;&#x6C60;&#x8D44;&#x6E90;</span></div><div class="line">pool.destroy();</div></pre></td></tr></table></figure></p>
-<p>&#x8FD0;&#x884C;&#x4E0A;&#x8FF0;&#x4EE3;&#x7801;&#xFF0C;&#x63A7;&#x5236;&#x53F0;&#x8F93;&#x51FA;&#xFF1A;</p>
-<blockquote>
-<p>set&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:OK<br>get&#x6307;&#x4EE4;&#x6267;&#x884C;&#x7ED3;&#x679C;:Hello, Redis!</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4F
-    
-    </summary>
-    
-      <category term="开源组件" scheme="http://aofeng.github.io/categories/%E5%BC%80%E6%BA%90%E7%BB%84%E4%BB%B6/"/>
-    
-      <category term="Redis" scheme="http://aofeng.github.io/categories/%E5%BC%80%E6%BA%90%E7%BB%84%E4%BB%B6/Redis/"/>
-    
-    
-      <category term="java" scheme="http://aofeng.github.io/tags/java/"/>
-    
-      <category term="redis" scheme="http://aofeng.github.io/tags/redis/"/>
-    
-      <category term="jedis" scheme="http://aofeng.github.io/tags/jedis/"/>
     
   </entry>
   
