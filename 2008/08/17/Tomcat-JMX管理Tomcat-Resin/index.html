@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Tomcat-JMX管理Tomcat/Resin | 聂勇的个人网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="tomcat,开源组件,jmx" />
+    
+    <meta name="description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomcat-JMX管理Tomcat/Resin">
+<meta property="og:url" content="http://aofeng.github.io/2008/08/17/Tomcat-JMX管理Tomcat-Resin/index.html">
+<meta property="og:site_name" content="聂勇的个人网站">
+<meta property="og:description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta property="og:image" content="http://aofeng.github.io/2008/08/17/Tomcat-JMX&#x7BA1;&#x7406;Tomcat-Resin/01.gif">
+<meta property="og:updated_time" content="2016-11-16T03:51:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tomcat-JMX管理Tomcat/Resin">
+<meta name="twitter:description" content="&amp;#x4F5C;&amp;#x8005;&amp;#xFF1A;&amp;#x8042;&amp;#x52C7;      &amp;#x6B22;&amp;#x8FCE;&amp;#x8F6C;&amp;#x8F7D;&amp;#xFF0C;&amp;#x8BF7;&amp;#x4FDD;&amp;#x7559;&amp;#x4F5C;&amp;#x8005;&amp;#x4FE1;&amp;#x606F;&amp;#x5E76;&amp;#x8BF4;&amp;#x660E;&amp;#x6587;&amp;#x7AE0;&amp;#x6765;&amp;#x6E90;&amp;#">
+<meta name="twitter:image" content="http://aofeng.github.io/2008/08/17/Tomcat-JMX&#x7BA1;&#x7406;Tomcat-Resin/01.gif">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="聂勇的个人网站" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-86920937-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?ce05028d1f67032125d91077c6c8a765";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">0与1构筑世界，程序员创造时代</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大众软件/">大众软件</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大众软件/CHM/">CHM</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大众软件/DiskGenius/">DiskGenius</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大众软件/Putty/">Putty</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大众软件/UltraEdit/">UltraEdit</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大众软件/引导盘/">引导盘</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大数据/">大数据</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/大数据/Logstash/">Logstash</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/">开源组件</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Apache-Commons-Logging/">Apache Commons Logging</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Apache-HttpServer/">Apache HttpServer</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/JMeter/">JMeter</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Jetty/">Jetty</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Log4j/">Log4j</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Memcached/">Memcached</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Nginx/">Nginx</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/OpenSSL/">OpenSSL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Redis/">Redis</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/开源组件/Tomcat/">Tomcat</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/操作系统/">操作系统</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/操作系统/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/操作系统/Windows/">Windows</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/">数据库</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/MySQL/">MySQL</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/数据库/Oracle/">Oracle</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/架构设计/">架构设计</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/架构设计/CDN/">CDN</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/架构设计/设计模式/">设计模式</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/版本控制/">版本控制</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/版本控制/Git/">Git</a></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/">编程</a><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/C/">C</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/HTTP/">HTTP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/Java/">Java</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/JavaScript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/PHP/">PHP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/Python/">Python</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/TCP-IP/">TCP/IP</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/编程/工具类/">工具类</a></li></ul></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/开源组件/">开源组件</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/开源组件/Tomcat/">Tomcat</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-Tomcat-JMX管理Tomcat-Resin" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Tomcat-JMX管理Tomcat/Resin
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/2008/08/17/Tomcat-JMX管理Tomcat-Resin/" class="article-date">
+    <time datetime="2008-08-17T05:10:13.000Z" itemprop="datePublished">2008-08-17</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jmx/">jmx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/开源组件/">开源组件</a></li></ul>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p><code>&#x4F5C;&#x8005;&#xFF1A;&#x8042;&#x52C7;      &#x6B22;&#x8FCE;&#x8F6C;&#x8F7D;&#xFF0C;&#x8BF7;&#x4FDD;&#x7559;&#x4F5C;&#x8005;&#x4FE1;&#x606F;&#x5E76;&#x8BF4;&#x660E;&#x6587;&#x7AE0;&#x6765;&#x6E90;&#xFF01;</code></p>
+<!-- toc -->
+<ul>
+<li><a href="#&#x73AF;&#x5883;">&#x73AF;&#x5883;</a></li>
+<li><a href="#jconsole&#x7B80;&#x4ECB;">Jconsole&#x7B80;&#x4ECB;</a></li>
+<li><a href="#&#x4E00;-&#x672C;&#x5730;&#x76D1;&#x63A7;">&#x4E00;&#x3001;&#x672C;&#x5730;&#x76D1;&#x63A7;</a><ul>
+<li><a href="#&#x5982;&#x4F55;&#x83B7;&#x53D6;&#x8FDB;&#x7A0B;id">&#x5982;&#x4F55;&#x83B7;&#x53D6;&#x8FDB;&#x7A0B;ID</a></li>
+</ul>
+</li>
+<li><a href="#&#x4E8C;-&#x8FDC;&#x7A0B;&#x76D1;&#x63A7;">&#x4E8C;&#x3001;&#x8FDC;&#x7A0B;&#x76D1;&#x63A7;</a></li>
+<li><a href="#&#x4E09;-&#x914D;&#x7F6E;resin30x&#x63A5;&#x53D7;jmx&#x7BA1;&#x7406;">&#x4E09;&#x3001;&#x914D;&#x7F6E;Resin3.0.x&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;</a></li>
+<li><a href="#&#x56DB;-&#x914D;&#x7F6E;resin31x&#x63A5;&#x53D7;jmx&#x7BA1;&#x7406;">&#x56DB;&#x3001;&#x914D;&#x7F6E;Resin3.1.x&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;</a></li>
+<li><a href="#&#x4E94;-&#x914D;&#x7F6E;tomcat&#x63A5;&#x53D7;jmx&#x7BA1;&#x7406;">&#x4E94;&#x3001;&#x914D;&#x7F6E;Tomcat&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;</a></li>
+</ul>
+<!-- tocstop -->
+<h1 id="&#x73AF;&#x5883;"><a href="#&#x73AF;&#x5883;" class="headerlink" title="&#x73AF;&#x5883;"></a>&#x73AF;&#x5883;</h1><ul>
+<li>Windows XP / Linux</li>
+<li>JDK5Update15</li>
+<li>Tomcat5.5.26</li>
+<li>Resin 3.1.6</li>
+</ul>
+<h1 id="jconsole&#x7B80;&#x4ECB;"><a href="#Jconsole&#x7B80;&#x4ECB;" class="headerlink" title="Jconsole&#x7B80;&#x4ECB;"></a>Jconsole&#x7B80;&#x4ECB;</h1><p>jconsole&#x662F;&#x4E00;&#x4E2A;JMX&#x517C;&#x5BB9;&#x7684;&#x76D1;&#x89C6;&#x5DE5;&#x5177;&#x3002;&#x5B83;&#x4F7F;&#x7528;Java&#x865A;&#x62DF;&#x673A;&#x7684;JMX&#x673A;&#x5236;&#x6765;&#x63D0;&#x4F9B;&#x8FD0;&#x884C;&#x5728;Java&#x5E73;&#x53F0;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x7684;&#x6027;&#x80FD;&#x4E0E;&#x8D44;&#x6E90;&#x8017;&#x8D39;&#x4FE1;&#x606F;&#x3002; &#x4F4D;&#x4E8E;JAVA_HOME/bin&#x76EE;&#x5F55;&#x3002;</p>
+<h1 id="&#x4E00;-&#x672C;&#x5730;&#x76D1;&#x63A7;"><a href="#&#x4E00;&#x3001;&#x672C;&#x5730;&#x76D1;&#x63A7;" class="headerlink" title="&#x4E00;&#x3001;&#x672C;&#x5730;&#x76D1;&#x63A7;"></a>&#x4E00;&#x3001;&#x672C;&#x5730;&#x76D1;&#x63A7;</h1><p>&#x547D;&#x4EE4;&#x8BED;&#x6CD5;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jconsole [&#x8FDB;&#x7A0B;ID]</div></pre></td></tr></table></figure></p>
+<p>&#x793A;&#x4F8B;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jconsole 688</div></pre></td></tr></table></figure></p>
+<h2 id="&#x5982;&#x4F55;&#x83B7;&#x53D6;&#x8FDB;&#x7A0B;id"><a href="#&#x5982;&#x4F55;&#x83B7;&#x53D6;&#x8FDB;&#x7A0B;ID" class="headerlink" title="&#x5982;&#x4F55;&#x83B7;&#x53D6;&#x8FDB;&#x7A0B;ID"></a>&#x5982;&#x4F55;&#x83B7;&#x53D6;&#x8FDB;&#x7A0B;ID</h2><ul>
+<li>Windows&#x4E0A;&#x5728;&#x4EFB;&#x52A1;&#x7BA1;&#x7406;&#x5668;&#x4E2D;&#x67E5;&#x770B;&#x3002;</li>
+<li>UNIX&#x4E0A;&#x7528;ps&#x67E5;&#x770B;&#x3002;</li>
+<li>&#x4F7F;&#x7528;jps&#x547D;&#x4EE4;&#x67E5;&#x770B;JVM&#x7684;&#x8FDB;&#x7A0B;ID&#xFF0C;&#x8BF7;&#x53C2;&#x8003;<a href="http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jps.html" target="_blank" rel="external">jps - Java Virtual Machine Process Status Tool</a>&#x3002;</li>
+</ul>
+<img src="/2008/08/17/Tomcat-JMX&#x7BA1;&#x7406;Tomcat-Resin/01.gif" alt="&#x56FE;1" title="&#x56FE;1">
+<p>jconsole&#x548C;&#x88AB;&#x76D1;&#x89C6;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5FC5;&#x987B;&#x662F;&#x4F7F;&#x7528;&#x540C;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x8FD0;&#x884C;&#x7684;&#xFF0C;&#x7BA1;&#x7406;&#x548C;&#x76D1;&#x89C6;&#x7CFB;&#x7EDF;&#x4F7F;&#x7528;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x7684;&#x6587;&#x4EF6;&#x6743;&#x9650;&#x3002;&#x5728;Windows&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x5982;&#x679C;&#x8981;&#x652F;&#x6301;&#x8FDC;&#x7A0B;&#x76D1;&#x63A7;&#x8FD8;&#x9700;&#x8981;&#x78C1;&#x76D8;&#x683C;&#x5F0F;&#x4E3A;NTFS&#x3002;<br>&#x5982;&#x679C;&#x4F60;&#x6CA1;&#x6709;&#x6307;&#x5B9A;PID&#xFF0C;&#x76F4;&#x63A5;&#x8FD0;&#x884C;jconsole&#xFF0C;jconsole&#x4F1A;&#x81EA;&#x52A8;&#x7684;&#x63A2;&#x6D4B;&#x51FA;&#x672C;&#x5730;&#x8FD0;&#x884C;&#x7684;&#x6240;&#x6709;java&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5E76;&#x663E;&#x793A;&#x4E00;&#x4E2A;&#x5BF9;&#x8BDD;&#x6846;&#x8BA9;&#x4F60;&#x9009;&#x62E9;&#x4F60;&#x60F3;&#x76D1;&#x63A7;&#x7684;&#x7A0B;&#x5E8F;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#xFF1A;<br><img src="/2008/08/17/Tomcat-JMX&#x7BA1;&#x7406;Tomcat-Resin/02.jpg" alt="&#x56FE;2" title="&#x56FE;2"><br>&#x4F7F;&#x7528;jconsole&#x76D1;&#x63A7;&#x672C;&#x5730;&#x5E94;&#x7528;&#x7684;&#x8BE6;&#x7EC6;&#x8BF4;&#x660E;&#x548C;&#x4F7F;&#x7528;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#x5B98;&#x65B9;&#x6587;&#x6863;<a href="http://java.sun.com/j2se/1.5.0/docs/guide/management/agent.html#local" target="_blank" rel="external">Local JMX Monitoring and Management</a>&#x3002;</p>
+<h1 id="&#x4E8C;-&#x8FDC;&#x7A0B;&#x76D1;&#x63A7;"><a href="#&#x4E8C;&#x3001;&#x8FDC;&#x7A0B;&#x76D1;&#x63A7;" class="headerlink" title="&#x4E8C;&#x3001;&#x8FDC;&#x7A0B;&#x76D1;&#x63A7;"></a>&#x4E8C;&#x3001;&#x8FDC;&#x7A0B;&#x76D1;&#x63A7;</h1><p>&#x547D;&#x4EE4;&#x8BED;&#x6CD5;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jconsole [&#x4E3B;&#x673A;&#x5730;&#x5740;:&#x7AEF;&#x53E3;]</div></pre></td></tr></table></figure></p>
+<p>&#x793A;&#x4F8B;&#xFF1A;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jconsole 10.3.18.58:9009</div></pre></td></tr></table></figure></p>
+<p>&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x5728;CMD&#x4E2D;&#x76F4;&#x63A5;&#x8F93;&#x5165;jconsole&#xFF0C;&#x7136;&#x540E;&#x5728;&#x201C;JConcole&#xFF1A;&#x8FDE;&#x63A5;&#x5230;&#x4EE3;&#x7406;&#x201D;&#x5BF9;&#x8BDD;&#x6846;&#x4E2D;&#x9009;&#x62E9;&#x201C;&#x8FDC;&#x7A0B;&#x201D;&#x9009;&#x9879;&#xFF0C;&#x8F93;&#x5165;&#x4E3B;&#x673A;&#x548C;&#x7AEF;&#x53E3;&#xFF0C;&#x5982;&#x4F55;&#x8BBE;&#x7F6E;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#xFF0C;&#x5219;&#x8FD8;&#x8981;&#x8F93;&#x5165;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#xFF0C;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#xFF1A;<br><img src="/2008/08/17/Tomcat-JMX&#x7BA1;&#x7406;Tomcat-Resin/03.jpg" alt="&#x56FE;3" title="&#x56FE;3"><br>&#x4F7F;&#x7528;jconsole&#x76D1;&#x63A7;&#x8FDC;&#x7A0B;&#x5E94;&#x7528;&#x7684;&#x8BE6;&#x7EC6;&#x8BF4;&#x660E;&#x548C;&#x4F7F;&#x7528;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#x5B98;&#x65B9;&#x6587;&#x6863;<a href="http://java.sun.com/j2se/1.5.0/docs/guide/management/agent.html#remote" target="_blank" rel="external">Remote Monitoring and Management</a>&#x3002;</p>
+<h1 id="&#x4E09;-&#x914D;&#x7F6E;resin30x&#x63A5;&#x53D7;jmx&#x7BA1;&#x7406;"><a href="#&#x4E09;&#x3001;&#x914D;&#x7F6E;Resin3-0-x&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;" class="headerlink" title="&#x4E09;&#x3001;&#x914D;&#x7F6E;Resin3.0.x&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;"></a>&#x4E09;&#x3001;&#x914D;&#x7F6E;Resin3.0.x&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;</h1><p>&#x5728;&#x542F;&#x52A8;resin&#x65F6;&#x52A0;&#x53C2;&#x6570;&#xFF1A;<br>windows&#x4E0B;<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">httpd.exe -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=<span class="number">9009</span> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false</div></pre></td></tr></table></figure></p>
+<p>Linux&#x4E0B;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">httpd.sh -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9009 -Dcom.sun.management.jmxremote.ssl=<span class="literal">false</span> -Dcom.sun.management.jmxremote.authenticate=<span class="literal">false</span></div></pre></td></tr></table></figure></p>
+<h1 id="&#x56DB;-&#x914D;&#x7F6E;resin31x&#x63A5;&#x53D7;jmx&#x7BA1;&#x7406;"><a href="#&#x56DB;&#x3001;&#x914D;&#x7F6E;Resin3-1-x&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;" class="headerlink" title="&#x56DB;&#x3001;&#x914D;&#x7F6E;Resin3.1.x&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;"></a>&#x56DB;&#x3001;&#x914D;&#x7F6E;Resin3.1.x&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;</h1><p>&#x4EE5;&#x4E0B;&#x914D;&#x7F6E;&#x5728;Windows&#x548C;Linux&#x4E0B;&#x540C;&#x65F6;&#x9002;&#x7528;&#xFF0C;&#x6253;&#x5F00;conf/resin.conf &#x4E2D;&#x7684;JMX&#x914D;&#x7F6E;&#x4FE1;&#x606F;&#x5982;&#x4E0B;:</p>
+<ul>
+<li><p>&#x65E0;&#x9650;&#x5236;&#x8BBF;&#x95EE;</p>
+<ul>
+<li><jvm-arg>-Dcom.sun.management.jmxremote</jvm-arg></li>
+<li><jvm-arg>-Dcom.sun.management.jmxremote.port=9009</jvm-arg></li>
+<li><jvm-arg>-Dcom.sun.management.jmxremote.ssl=false</jvm-arg></li>
+<li><jvm-arg>-Dcom.sun.management.jmxremote.authenticate=false</jvm-arg></li>
+</ul>
+</li>
+<li><p>&#x9700;&#x8981;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#x8BBF;&#x95EE;</p>
+<ul>
+<li><jvm-arg>-Dcom.sun.management.jmxremote</jvm-arg></li>
+<li><jvm-arg>-Dcom.sun.management.jmxremote.port=9009</jvm-arg></li>
+<li><jvm-arg>-Dcom.sun.management.jmxremote.ssl=false</jvm-arg></li>
+<li><jvm-arg>-Dcom.sun.management.jmxremote.authenticate=true</jvm-arg></li>
+<li><jvm-arg>-Dcom.sun.management.jmxremote.access.file=D:/temp/jmxremote.access</jvm-arg></li>
+<li><jm-arg>-Dcom.sun.management.jmxremote.password.file=D:/temp/jmxremote.password</jm-arg></li>
+</ul>
+</li>
+</ul>
+<p>&#x6253;&#x5F00;jconsole&#xFF0C;&#x7528;&#x672C;&#x5730;&#x6216;&#x8FDC;&#x7A0B;&#x65B9;&#x5F0F;&#x8FDB;&#x5165;&#xFF0C;&#x5728;MBean&#x9009;&#x9879;&#x4E2D;&#x5C06;&#x770B;&#x5230;resin&#x7684;MBean&#xFF0C;&#x5982;&#x4E0B;&#x754C;&#x9762;&#x6240;&#x793A;&#xFF1A;<br><img src="/2008/08/17/Tomcat-JMX&#x7BA1;&#x7406;Tomcat-Resin/04.jpg" alt="&#x56FE;4" title="&#x56FE;4"></p>
+<h1 id="&#x4E94;-&#x914D;&#x7F6E;tomcat&#x63A5;&#x53D7;jmx&#x7BA1;&#x7406;"><a href="#&#x4E94;&#x3001;&#x914D;&#x7F6E;Tomcat&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;" class="headerlink" title="&#x4E94;&#x3001;&#x914D;&#x7F6E;Tomcat&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;"></a>&#x4E94;&#x3001;&#x914D;&#x7F6E;Tomcat&#x63A5;&#x53D7;JMX&#x7BA1;&#x7406;</h1><p>&#x6253;&#x5F00;Tomcat&#x7684;bin/catalina.bat&#xFF0C;&#x5982;&#x679C;&#x4E3A;linux&#x6216;unix&#x7CFB;&#x7EDF;&#xFF0C;&#x5219;&#x4E3A;catalina.sh&#x6587;&#x4EF6;&#x3002;<br>&#x627E;&#x5230;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">set JAVA_OPTS=%JAVA_OPTS% -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.util.logging.config.file=&quot;%CATALINA_BASE%\conf \logging.properties</div></pre></td></tr></table></figure></p>
+<p>&#x4FEE;&#x6539;&#x4E3A;&#xFF1A;</p>
+<ul>
+<li><p>&#x65E0;&#x9650;&#x5236;&#x8BBF;&#x95EE;<br>&#x5728;&#x201D;rem &#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x201C;&#x4E0B;&#x9762;&#x6DFB;&#x52A0;&#x4E00;&#x884C;&#xFF1A;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">set JAVA_OPTS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9008 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false</div></pre></td></tr></table></figure>
+</li>
+<li><p>&#x9700;&#x8981;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#x8BBF;&#x95EE;<br>&#x5728;&#x201D;rem &#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x201C;&#x4E0B;&#x9762;&#x6DFB;&#x52A0;&#x4E00;&#x884C;&#xFF1A;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">set JAVA_OPTS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9008 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file=D:/temp/jmxremote.password -Dcom.sun.management.jmxremote.access.file=D:/temp/jmxremote.access</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>&#x6253;&#x5F00;jconsole&#xFF0C;&#x7528;&#x672C;&#x5730;&#x6216;&#x8FDC;&#x7A0B;&#x65B9;&#x5F0F;&#x8FDB;&#x5165;&#xFF0C;&#x5728;MBean&#x9009;&#x9879;&#x4E2D;&#x5C06;&#x770B;&#x5230;Tomcat&#x7684;MBean&#xFF0C;&#x5982;&#x4E0B;&#x754C;&#x9762;&#x6240;&#x793A;&#xFF1A;<br><img src="/2008/08/17/Tomcat-JMX&#x7BA1;&#x7406;Tomcat-Resin/05.jpg" alt="&#x56FE;5" title="&#x56FE;5"></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2008/08/17/Tomcat-JMX管理Tomcat-Resin/" data-title="Tomcat-JMX管理Tomcat/Resin" data-url="http://aofeng.github.io/2008/08/17/Tomcat-JMX管理Tomcat-Resin/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/aofeng" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2008/08/23/Java-Socket错误解决/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            Java-Socket错误解决
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2008/08/13/Java-用JavaMail读取eml文件/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Java-用JavaMail读取eml文件</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2016/01/04/MySQL5-5-&#x5C06;&#x5B57;&#x7B26;&#x96C6;&#x4ECE;utf8&#x5347;&#x7EA7;&#x4E3A;utf8mb4/cover.jpg)" alt="MySQL5.5-将字符集从utf8升级为utf8mb4" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据库/MySQL/">MySQL</a></p>
+                            <p class="item-title"><a href="/2016/01/04/MySQL5-5-将字符集从utf8升级为utf8mb4/" class="title">MySQL5.5-将字符集从utf8升级为utf8mb4</a></p>
+                            <p class="item-date"><time datetime="2016-01-04T12:08:44.000Z" itemprop="datePublished">2016-01-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/17/Gson-自定义反序列化/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/17/Gson-&#x81EA;&#x5B9A;&#x4E49;&#x53CD;&#x5E8F;&#x5217;&#x5316;/cover.jpg)" alt="Gson-自定义反序列化" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/17/Gson-自定义反序列化/" class="title">Gson-自定义反序列化</a></p>
+                            <p class="item-date"><time datetime="2015-08-17T12:21:12.000Z" itemprop="datePublished">2015-08-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/14/Gson-自定义序列化/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/14/Gson-&#x81EA;&#x5B9A;&#x4E49;&#x5E8F;&#x5217;&#x5316;/cover.jpg)" alt="Gson-自定义序列化" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/14/Gson-自定义序列化/" class="title">Gson-自定义序列化</a></p>
+                            <p class="item-date"><time datetime="2015-08-14T12:13:56.000Z" itemprop="datePublished">2015-08-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/08/12/Gson-序列化与反序列化基础操作/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/08/12/Gson-&#x5E8F;&#x5217;&#x5316;&#x4E0E;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x57FA;&#x7840;&#x64CD;&#x4F5C;/cover.jpg)" alt="Gson-序列化与反序列化基础操作" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/编程/">编程</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2015/08/12/Gson-序列化与反序列化基础操作/" class="title">Gson-序列化与反序列化基础操作</a></p>
+                            <p class="item-date"><time datetime="2015-08-12T11:57:18.000Z" itemprop="datePublished">2015-08-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/07/21/将项目从HG迁移至Git/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/07/21/&#x5C06;&#x9879;&#x76EE;&#x4ECE;HG&#x8FC1;&#x79FB;&#x81F3;Git/cover.png)" alt="将项目从HG迁移至Git" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/版本控制/">版本控制</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/版本控制/Git/">Git</a></p>
+                            <p class="item-title"><a href="/2015/07/21/将项目从HG迁移至Git/" class="title">将项目从HG迁移至Git</a></p>
+                            <p class="item-date"><time datetime="2015-07-21T12:38:18.000Z" itemprop="datePublished">2015-07-21</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/大众软件/">大众软件</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/大众软件/CHM/">CHM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/大众软件/DiskGenius/">DiskGenius</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/大众软件/Putty/">Putty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/大众软件/UltraEdit/">UltraEdit</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/大众软件/引导盘/">引导盘</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/大数据/">大数据</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/大数据/Logstash/">Logstash</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/">开源组件</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Apache-Commons-Logging/">Apache Commons Logging</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Apache-HttpServer/">Apache HttpServer</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/JMeter/">JMeter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Jetty/">Jetty</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Log4j/">Log4j</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Memcached/">Memcached</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Nginx/">Nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/OpenSSL/">OpenSSL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Redis/">Redis</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源组件/Tomcat/">Tomcat</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a><span class="category-list-count">24</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/Linux/">Linux</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/Windows/">Windows</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/MySQL/">MySQL</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/Oracle/">Oracle</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构设计/">架构设计</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/架构设计/CDN/">CDN</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构设计/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/版本控制/">版本控制</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/版本控制/Git/">Git</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/">编程</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/编程/C/">C</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/HTTP/">HTTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/">Java</a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/Ant/">Ant</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/DbUnit/">DbUnit</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/Gson/">Gson</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/NIO/">NIO</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Java/单元测试/">单元测试</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/JavaScript/">JavaScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/PHP/">PHP</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/Python/">Python</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/TCP-IP/">TCP/IP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/工具类/">工具类</a><span class="category-list-count">5</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">七月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">六月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">五月 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">四月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">十一月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">十月 2012</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">九月 2012</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/08/">八月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">七月 2012</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">六月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">二月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">十二月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">八月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/05/">五月 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/04/">四月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">三月 2011</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">二月 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/01/">一月 2011</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/12/">十二月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/09/">九月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/12/">十二月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/11/">十一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/10/">十月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/09/">九月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/ant/" style="font-size: 12.73px;">ant</a> <a href="/tags/apache/" style="font-size: 18.18px;">apache</a> <a href="/tags/buffer/" style="font-size: 10px;">buffer</a> <a href="/tags/c/" style="font-size: 16.36px;">c</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/cactus/" style="font-size: 10px;">cactus</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/centos/" style="font-size: 12.73px;">centos</a> <a href="/tags/chm/" style="font-size: 10px;">chm</a> <a href="/tags/cobertura/" style="font-size: 10px;">cobertura</a> <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/cvim/" style="font-size: 10px;">cvim</a> <a href="/tags/cx-Oracle/" style="font-size: 10px;">cx_Oracle</a> <a href="/tags/dbunit/" style="font-size: 10px;">dbunit</a> <a href="/tags/dbutils/" style="font-size: 10.91px;">dbutils</a> <a href="/tags/diskgenius/" style="font-size: 10px;">diskgenius</a> <a href="/tags/easymock/" style="font-size: 10px;">easymock</a> <a href="/tags/eclipse/" style="font-size: 10.91px;">eclipse</a> <a href="/tags/ejb3/" style="font-size: 10.91px;">ejb3</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/eml/" style="font-size: 10px;">eml</a> <a href="/tags/fsck/" style="font-size: 10px;">fsck</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gnome/" style="font-size: 10px;">gnome</a> <a href="/tags/gson/" style="font-size: 11.82px;">gson</a> <a href="/tags/gui/" style="font-size: 10px;">gui</a> <a href="/tags/hashmap/" style="font-size: 10px;">hashmap</a> <a href="/tags/hg/" style="font-size: 11.82px;">hg</a> <a href="/tags/http/" style="font-size: 10.91px;">http</a> <a href="/tags/ibatis/" style="font-size: 10.91px;">ibatis</a> <a href="/tags/io/" style="font-size: 10.91px;">io</a> <a href="/tags/iostat/" style="font-size: 10px;">iostat</a> <a href="/tags/ip/" style="font-size: 10px;">ip</a> <a href="/tags/jar/" style="font-size: 10px;">jar</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/javamail/" style="font-size: 10px;">javamail</a> <a href="/tags/javascript/" style="font-size: 10.91px;">javascript</a> <a href="/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/tags/jedis/" style="font-size: 10.91px;">jedis</a> <a href="/tags/jetty/" style="font-size: 11.82px;">jetty</a> <a href="/tags/jmeter/" style="font-size: 10px;">jmeter</a> <a href="/tags/jmx/" style="font-size: 10.91px;">jmx</a> <a href="/tags/json/" style="font-size: 11.82px;">json</a> <a href="/tags/jstatd/" style="font-size: 10px;">jstatd</a> <a href="/tags/junit/" style="font-size: 10.91px;">junit</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/kdiff3/" style="font-size: 10px;">kdiff3</a> <a href="/tags/kibana/" style="font-size: 10px;">kibana</a> <a href="/tags/kitty/" style="font-size: 10px;">kitty</a> <a href="/tags/less/" style="font-size: 10px;">less</a> <a href="/tags/linux/" style="font-size: 19.09px;">linux</a> <a href="/tags/log4j/" style="font-size: 12.73px;">log4j</a> <a href="/tags/logging/" style="font-size: 10px;">logging</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/make/" style="font-size: 10px;">make</a> <a href="/tags/man/" style="font-size: 10px;">man</a> <a href="/tags/memcached/" style="font-size: 11.82px;">memcached</a> <a href="/tags/mingw/" style="font-size: 10px;">mingw</a> <a href="/tags/mock/" style="font-size: 11.82px;">mock</a> <a href="/tags/mysql/" style="font-size: 13.64px;">mysql</a> <a href="/tags/netsh/" style="font-size: 10px;">netsh</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/nio/" style="font-size: 13.64px;">nio</a> <a href="/tags/nosql/" style="font-size: 10px;">nosql</a> <a href="/tags/notepad/" style="font-size: 10px;">notepad++</a> <a href="/tags/openssl/" style="font-size: 10px;">openssl</a> <a href="/tags/oracle/" style="font-size: 10.91px;">oracle</a> <a href="/tags/pcre/" style="font-size: 10px;">pcre</a> <a href="/tags/php/" style="font-size: 14.55px;">php</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/pool/" style="font-size: 10px;">pool</a> <a href="/tags/precisionhelper/" style="font-size: 10px;">precisionhelper</a> <a href="/tags/putty/" style="font-size: 11.82px;">putty</a> <a href="/tags/python/" style="font-size: 11.82px;">python</a> <a href="/tags/reactor/" style="font-size: 10px;">reactor</a> <a href="/tags/redhat/" style="font-size: 10px;">redhat</a> <a href="/tags/redis/" style="font-size: 11.82px;">redis</a> <a href="/tags/resin/" style="font-size: 10px;">resin</a> <a href="/tags/samba/" style="font-size: 10px;">samba</a> <a href="/tags/serialize/" style="font-size: 11.82px;">serialize</a> <a href="/tags/servlet/" style="font-size: 10px;">servlet</a> <a href="/tags/shell/" style="font-size: 10.91px;">shell</a> <a href="/tags/socket/" style="font-size: 10px;">socket</a> <a href="/tags/spring/" style="font-size: 10.91px;">spring</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/ssh/" style="font-size: 12.73px;">ssh</a> <a href="/tags/struts2/" style="font-size: 11.82px;">struts2</a> <a href="/tags/tcp/" style="font-size: 10px;">tcp</a> <a href="/tags/tmux/" style="font-size: 10px;">tmux</a> <a href="/tags/tomcat/" style="font-size: 13.64px;">tomcat</a> <a href="/tags/ubuntu/" style="font-size: 13.64px;">ubuntu</a> <a href="/tags/ulimit/" style="font-size: 10px;">ulimit</a> <a href="/tags/ultraedit/" style="font-size: 10px;">ultraedit</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/virsualgc/" style="font-size: 10px;">virsualgc</a> <a href="/tags/virtualbox/" style="font-size: 10px;">virtualbox</a> <a href="/tags/vmstat/" style="font-size: 10px;">vmstat</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/wiremock/" style="font-size: 10px;">wiremock</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a> <a href="/tags/xhprof/" style="font-size: 10px;">xhprof</a> <a href="/tags/xmanger/" style="font-size: 10px;">xmanger</a> <a href="/tags/xming/" style="font-size: 10px;">xming</a> <a href="/tags/xwindow/" style="font-size: 10.91px;">xwindow</a> <a href="/tags/zmodem/" style="font-size: 10px;">zmodem</a> <a href="/tags/主从复制/" style="font-size: 10px;">主从复制</a> <a href="/tags/事件驱动/" style="font-size: 10px;">事件驱动</a> <a href="/tags/会话/" style="font-size: 10px;">会话</a> <a href="/tags/内存映射/" style="font-size: 10px;">内存映射</a> <a href="/tags/单元测试/" style="font-size: 15.45px;">单元测试</a> <a href="/tags/原码/" style="font-size: 10px;">原码</a> <a href="/tags/反码/" style="font-size: 10px;">反码</a> <a href="/tags/哈希表/" style="font-size: 10px;">哈希表</a> <a href="/tags/坏区/" style="font-size: 10px;">坏区</a> <a href="/tags/多系统/" style="font-size: 10px;">多系统</a> <a href="/tags/多线程/" style="font-size: 10px;">多线程</a> <a href="/tags/字体/" style="font-size: 10px;">字体</a> <a href="/tags/对象池/" style="font-size: 10px;">对象池</a> <a href="/tags/工具类/" style="font-size: 10px;">工具类</a> <a href="/tags/序列化/" style="font-size: 11.82px;">序列化</a> <a href="/tags/开源组件/" style="font-size: 17.27px;">开源组件</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/引导盘/" style="font-size: 10px;">引导盘</a> <a href="/tags/指针/" style="font-size: 10.91px;">指针</a> <a href="/tags/数据库/" style="font-size: 14.55px;">数据库</a> <a href="/tags/数组/" style="font-size: 10px;">数组</a> <a href="/tags/文件锁/" style="font-size: 10px;">文件锁</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/桌面/" style="font-size: 10px;">桌面</a> <a href="/tags/版本控制/" style="font-size: 10px;">版本控制</a> <a href="/tags/状态/" style="font-size: 10px;">状态</a> <a href="/tags/电子书/" style="font-size: 10px;">电子书</a> <a href="/tags/监控/" style="font-size: 10px;">监控</a> <a href="/tags/硬盘/" style="font-size: 10.91px;">硬盘</a> <a href="/tags/线程/" style="font-size: 11.82px;">线程</a> <a href="/tags/线程池/" style="font-size: 10.91px;">线程池</a> <a href="/tags/缓冲区/" style="font-size: 10px;">缓冲区</a> <a href="/tags/缓存/" style="font-size: 10px;">缓存</a> <a href="/tags/编程/" style="font-size: 10.91px;">编程</a> <a href="/tags/网络/" style="font-size: 11.82px;">网络</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/补码/" style="font-size: 10px;">补码</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/连接/" style="font-size: 10px;">连接</a> <a href="/tags/面向对象/" style="font-size: 10.91px;">面向对象</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2016 聂勇</p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'aofenggithub'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
